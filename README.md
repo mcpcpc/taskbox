@@ -2,12 +2,6 @@
 
 A minimal task manager for automated test.
 
-## Commands
-
-Database initialization.
-
-    flask --app taskbox init-db
-
 ## Install
 
 When using git, clone the repository and change your PWD.
@@ -23,6 +17,16 @@ Create and activate a virtual environment.
 Install TaskBOX to the virtual environment.
 
     pip install -e .
+
+## Commands
+
+The Sqlite3 database can be initialized or re-initialized with the
+following command. Note that the default target path can be changed
+by defining `DB_PATH` in the environment variables. By default, a
+new database will be placed in the `/tmp/taskbox.sqlite` directory.
+
+    # export DB_PATH=/tmp/tasks.sqlite
+    flask --app taskbox init-db
 
 ## Deployment
 
