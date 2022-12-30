@@ -74,7 +74,7 @@ def read_task(task_id: int):
 
 @tasks.put("/tasks/<int:task_id>")
 def update_task(task_id: int):
-    """Update a task by identifier
+    """Update a task by identifier.
     
     Similar to creating a new task, however, this will
     update the task field values for a specified
