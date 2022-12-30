@@ -21,8 +21,16 @@ class ApiTestCase(unittest.TestCase):
         )
         self.assertIn("Initialized", result.output)
 
-    def test_task_create(self):
-        pass
+    def test_create_task(self):
+        result = self.client.post(
+            "/api/tasks",
+            data={
+                "device": "device1",
+                "description: "description1",
+                "control": "control1"
+            }
+        )
+        self.assertEqual(result.status_code, 200)
 
 
 if __name__ == "__main__":
