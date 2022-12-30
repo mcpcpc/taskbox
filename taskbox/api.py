@@ -28,7 +28,7 @@ def get_nvmem(base: str, slave: str) -> str:
         file.seek(32)
         while chunk := file.read(32):
             content += chunk[1:-3]
-    return content.rstrip(b"\xff")
+    return content.rstrip(b"\xff")[:-3]
 
 
 def verify(reference: str, test: str) -> str:
@@ -108,5 +108,5 @@ def task_action(task_id: int):
     if "not found" in slave:
         return "No device connected"
     nvmem = get_nvmem(base, slave)
-    validation = verify(control[0], nvmem.decode(errors="replace"))
+    validation = verify(control[0][0], nvmem.decode(errors="replace"))
     return [slave, validation]
