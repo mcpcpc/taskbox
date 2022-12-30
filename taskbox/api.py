@@ -48,14 +48,17 @@ def create_task():
     if "file" in request.files:
         file = request.files["file"].read()
         form["control"] = file.decode()
-    raw = "INSERT INTO tasks (device, description, control) VALUES (:device, :description, :control)"
+    raw = (
+        "INSERT INTO tasks (device, description, control) "
+        "VALUES (:device, :description, :control)"
+    )
     modify_db(raw, form)
     return "Task created successfully", 201
 
 
 @tasks.get("/tasks/<int:task_id>")
 def read_task(task_id: int):
-    """Get task by identifier.
+    """Read task by identifier.
     
     Returns the parameters associated with a specific
     task identifier. Only one task can be returned for
