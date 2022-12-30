@@ -26,7 +26,7 @@ class ApiTestCase(unittest.TestCase):
             "/api/tasks",
             data={
                 "device": "device1",
-                "description: "description1",
+                "description": "description1",
                 "control": "control1"
             }
         )
