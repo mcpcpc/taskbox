@@ -69,22 +69,6 @@ def read_task(task_id: int):
     return query_db(raw, (task_id,))
 
 
-@tasks.put("/tasks/<int:task_id>")
-def update_task(task_id: int):
-    """Update a task by identifier.
-
-    Similar to creating a new task, however, this will update the task field values for
-    a specified identifier.
-
-    :form device: typically the assembly part number
-    :form description: description of the device
-    :form control: validation content
-
-    """
-    # placeholder
-    return "Task updated successfully", 201
-
-
 @tasks.delete("/tasks/<int:task_id>")
 def delete_task(task_id: int):
     """Delete task by identifier.
