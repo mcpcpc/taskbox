@@ -6,7 +6,7 @@ A minimal task manager for automated test.
 
 ### PyPI
 
-Install and update using [pip](https://pip.pypa.io/en/stable/getting-started/):
+Install and update using `pip`:
 
 ```shell
 pip install -U taskbox
