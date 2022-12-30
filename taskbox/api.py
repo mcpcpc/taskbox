@@ -29,6 +29,14 @@ def get_nvmem(base: str, slave: str) -> str:
     return content.rstrip(b"\xff")
 
 
+def verify(reference: str, test: str) -> str:
+    """Verify content of reference and test string."""
+    if reference == test:
+        return "Match"
+    else:
+        return "Does not match"
+    
+
 @tasks.post("/tasks")
 def create_task():
     """Post task to tasks list.
@@ -62,8 +70,7 @@ def read_task(task_id: int):
     :type task_id: int
 
     """
-    raw = "select * from tasks where task_id = ?"
-    return query_db(raw, (task_id,))
+    return query_db("select * from tasks where task_id = ?", (task_id,))
 
 
 @tasks.delete("/tasks/<int:task_id>")
@@ -78,8 +85,7 @@ def delete_task(task_id: int):
     :type task_id: int
 
     """
-    raw = "delete from tasks where task_id = ?"
-    modify_db(raw, (task_id,))
+    modify_db("delete from tasks where task_id = ?", (task_id,))
     return f"Task id={task_id} deleted successfully"
 
 
@@ -94,8 +100,7 @@ def task_action(task_id: int):
     :type task_id: int
 
     """
-    raw = "select control from tasks where task_id = ?"
-    control = query_db(raw, (task_id,))
+    control = query_db("select control from tasks where task_id = ?", (task_id,))
     base = "/sys/bus/w1/devices"
     slave = get_slaves(base)
     if "not found" in slave:
