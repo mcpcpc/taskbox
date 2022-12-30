@@ -105,3 +105,27 @@ def delete_task(task_id: int):
     raw = "delete from tasks where task_id = ?"
     modify_db(raw, (task_id,))
     return f"Task id={task_id} deleted successfully"
+
+
+@tasks.get("/tasks/<int:task_id>/action")
+def task_action(task_id: int):
+    """Get task action.
+    
+    Returns the results of a specified action, configured
+    per the task identifiers parameters.
+    
+    :param task_id: task identifier
+    :type task_id: int
+    
+    """
+    raw = "select control from tasks where task_id = ?"
+    control = query_db(raw, (task_id,))
+    base = "/sys/bus/w1/devices"
+    slave = get_slaves(base)
+    if "not found" in slave:
+        return "No device connected"
+    nvmem = get_nvmem(base, slave)
+    return {
+            "slave": slave,
+            "nvmem": nvmem.decode(errors="replace")
+    }
