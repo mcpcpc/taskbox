@@ -26,7 +26,7 @@ Install TaskBOX to the virtual environment.
 
 ## Deployment
 
-WSGI via waitress.
+Production WSGI via waitress.
 
     pip install waitress
     waitress-serve --call 'taskbox:create_app'
