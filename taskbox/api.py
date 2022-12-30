@@ -37,7 +37,7 @@ def verify(reference: str, test: str) -> str:
         return "Match"
     else:
         return "Does not match"
-    
+
 
 @tasks.post("/tasks")
 def create_task():
