@@ -18,7 +18,7 @@ When using git, clone the repository and make it your PWD.
 Create a virtualenv and activate it.
 
     python3 -m venv venv
-    souce venv/bin/activate
+    source venv/bin/activate
 
 Install TaskBOX to the virtual environment.
 
