@@ -23,9 +23,11 @@ def get_slaves(base: str) -> str:
 def get_nvmem(base: str, slave: str) -> str:
     """Read byte content of attached 1-wire EPROM."""
     path = Path(base) / slave / slave / "nvmem"
+    content = b""
     with open(path, "rb") as file:
         file.seek(32)
-        content = file.read()
+        while chunk := file.read(32):
+            content += chunk[1:-3]
     return content.rstrip(b"\xff")
 
 
