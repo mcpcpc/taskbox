@@ -2,7 +2,7 @@ import unittest
 
 from taskbox import create_app
 
-DB_TEST_MEM = {"DATABASE": ":memory:"}
+DB_TEST_MEM = {"DATABASE": ""}
 
 class ApiTestCase(unittest.TestCase):
     def setUp(self):
