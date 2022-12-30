@@ -46,10 +46,7 @@ def create_task():
     if "file" in request.files:
         file = request.files["file"].read()
         form["control"] = file.decode()
-    raw = (
-        "INSERT INTO tasks (device, description, control) "
-        "VALUES (:device, :description, :control)"
-    )
+    raw = "INSERT INTO tasks (device, description, control) VALUES (:device, :description, :control)"
     modify_db(raw, form)
     return "Task created successfully", 201
 
