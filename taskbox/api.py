@@ -106,4 +106,5 @@ def task_action(task_id: int):
     if "not found" in slave:
         return "No device connected"
     nvmem = get_nvmem(base, slave)
-    return [slave, nvmem.decode(errors="replace")]
+    validation = verify(control, nvmem.decode(errors="replace"))
+    return [slave, validation]
