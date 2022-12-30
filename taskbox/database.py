@@ -12,15 +12,11 @@ from flask import g
 
 
 def get_db():
-    """Connect to the application's configured database. The connection
-    is unique for each request and will be reused if this is called
-    again.
+    """Connect to the application's configured database. The connection is unique for
+    each request and will be reused if this is called again.
     """
     if "db" not in g:
-        g.db = connect(
-            current_app.config["DATABASE"],
-            detect_types=PARSE_DECLTYPES
-        )
+        g.db = connect(current_app.config["DATABASE"], detect_types=PARSE_DECLTYPES)
         g.db.row_factory = Row
     return g.db
 
@@ -44,7 +40,7 @@ def modify_db(raw: str, args: dict = {}):
     """Modify/update the connected database."""
     db = get_db()
     db.cursor().execute(raw, args)
-    db.commit() 
+    db.commit()
 
 
 def init_db():
@@ -63,8 +59,8 @@ def init_db_command():
 
 
 def init_app(app):
-    """Register database functions with the Flask app. This is called by
-       the application factory.
+    """Register database functions with the Flask app. This is called by the
+    application factory.
     """
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)

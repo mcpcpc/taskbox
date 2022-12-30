@@ -8,6 +8,7 @@ from taskbox.database import query_db
 
 home = Blueprint("home", __name__)
 
+
 @home.get("/")
 def index():
     rows = query_db("select * from tasks order by device")

@@ -32,17 +32,15 @@ def get_nvmem(base: str, slave: str) -> str:
 @tasks.post("/tasks")
 def create_task():
     """Post task to tasks list.
-    
-    Each device that is intented to be tested shall have
-    a unique task identifier characterized by the form
-    parameters below. Upon successful insertion into the
-    task database, a unique numeric *task_id* will be 
-    generated.
-    
+
+    Each device that is intented to be tested shall have a unique task identifier
+    characterized by the form parameters below. Upon successful insertion into the task
+    database, a unique numeric *task_id* will be generated.
+
     :form device: typically the assembly part number
     :form description: description of the device
     :form control: validation content
-    
+
     """
     form = request.form.copy()
     if "file" in request.files:
@@ -59,14 +57,13 @@ def create_task():
 @tasks.get("/tasks/<int:task_id>")
 def read_task(task_id: int):
     """Read task by identifier.
-    
-    Returns the parameters associated with a specific
-    task identifier. Only one task can be returned for
-    a given request.
-    
+
+    Returns the parameters associated with a specific task identifier. Only one task
+    can be returned for a given request.
+
     :param task_id: task identifier
     :type task_id: int
-    
+
     """
     raw = "select * from tasks where task_id = ?"
     return query_db(raw, (task_id,))
@@ -75,15 +72,14 @@ def read_task(task_id: int):
 @tasks.put("/tasks/<int:task_id>")
 def update_task(task_id: int):
     """Update a task by identifier.
-    
-    Similar to creating a new task, however, this will
-    update the task field values for a specified
-    identifier.
-    
+
+    Similar to creating a new task, however, this will update the task field values for
+    a specified identifier.
+
     :form device: typically the assembly part number
     :form description: description of the device
     :form control: validation content
-    
+
     """
     # placeholder
     return "Task updated successfully", 201
@@ -92,15 +88,14 @@ def update_task(task_id: int):
 @tasks.delete("/tasks/<int:task_id>")
 def delete_task(task_id: int):
     """Delete task by identifier.
-    
-    When a task is deleted, it will be removed from the
-    list of available tasks. Consequently, any action
-    calls associated with the deleted *task_id* will no
+
+    When a task is deleted, it will be removed from the list of available tasks.
+    Consequently, any action calls associated with the deleted *task_id* will no
     longer be available.
-    
+
     :param task_id: task identifier
     :type task_id: int
-    
+
     """
     raw = "delete from tasks where task_id = ?"
     modify_db(raw, (task_id,))
@@ -110,13 +105,13 @@ def delete_task(task_id: int):
 @tasks.get("/tasks/<int:task_id>/action")
 def task_action(task_id: int):
     """Get task action.
-    
-    Returns the results of a specified action, configured
-    per the task identifiers parameters.
-    
+
+    Returns the results of a specified action, configured per the task identifiers
+    parameters.
+
     :param task_id: task identifier
     :type task_id: int
-    
+
     """
     raw = "select control from tasks where task_id = ?"
     control = query_db(raw, (task_id,))
@@ -125,7 +120,4 @@ def task_action(task_id: int):
     if "not found" in slave:
         return "No device connected"
     nvmem = get_nvmem(base, slave)
-    return {
-            "slave": slave,
-            "nvmem": nvmem.decode(errors="replace")
-    }
+    return {"slave": slave, "nvmem": nvmem.decode(errors="replace")}
