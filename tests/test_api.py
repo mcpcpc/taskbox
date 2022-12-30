@@ -5,7 +5,7 @@ from taskbox import create_app
 
 class ApiTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app()
+        self.app = create_app({"DATABASE": ":MEMORY:"})
         self.ctx = self.app.app_context()
         self.ctx.push()
         self.client = self.app.test_client()
