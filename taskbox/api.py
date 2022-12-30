@@ -6,8 +6,8 @@ from pathlib import Path
 from flask import Blueprint
 from flask import request
 
-from taskbox.database import modify_db
-from taskbox.database import query_db
+from taskbox.db import modify_db
+from taskbox.db import query_db
 
 tasks = Blueprint("tasks", __name__, url_prefix="/api")
 

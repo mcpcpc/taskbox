@@ -5,7 +5,7 @@ from os import getenv
 
 from flask import Flask
 
-from taskbox.database import init_app
+from taskbox.db import init_app
 from taskbox.api import tasks
 from taskbox.ux import home
 

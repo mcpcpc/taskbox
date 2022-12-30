@@ -4,7 +4,7 @@
 from flask import Blueprint
 from flask import render_template
 
-from taskbox.database import query_db
+from taskbox.db import query_db
 
 home = Blueprint("home", __name__)
 
