@@ -2,10 +2,11 @@ import unittest
 
 from taskbox import create_app
 
+DB_TEST_MEM = {"DATABASE": ":memory:"}
 
 class ApiTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app({"DATABASE": ":MEMORY:"})
+        self.app = create_app(DB_TEST_MEM)
         self.ctx = self.app.app_context()
         self.ctx.push()
         self.client = self.app.test_client()
@@ -19,6 +20,9 @@ class ApiTestCase(unittest.TestCase):
             args=["init-db"]
         )
         self.assertIn("Initialized", result.output)
+
+    def test_task_create(self):
+        pass
 
 
 if __name__ == "__main__":
