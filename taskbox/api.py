@@ -13,7 +13,7 @@ tasks = Blueprint("tasks", __name__, url_prefix='/api')
 
 
 def get_slaves(base: str) -> str:
-    """"""
+    """Read the list of connected slave EPROMs to master."""
     path = next(Path(base).glob("w1_bus_master*/w1_master_slaves"))
     with open(path, "r") as file:
         content = file.read()
