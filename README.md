@@ -1,6 +1,6 @@
 # TaskBOX
 
-A minimal task manager for automated test.
+A minimal task manager for automated test
 
 ## Commands
 
@@ -8,9 +8,9 @@ Database initialization
 
     flask --app taskbox init-db
 
- ## Install
+## Install
 
-Create a virtualenv and activate it::
+Create a virtualenv and activate it
 
     python3 -m venv venv
     souce venv/bin/activate
