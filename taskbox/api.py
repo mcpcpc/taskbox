@@ -9,7 +9,7 @@ from flask import request
 from taskbox.database import modify_db
 from taskbox.database import query_db
 
-tasks = Blueprint("tasks", __name__, url_prefix='/api')
+tasks = Blueprint("tasks", __name__, url_prefix="/api")
 
 
 def get_slaves(base: str) -> str:
