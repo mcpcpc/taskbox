@@ -10,12 +10,12 @@ Database initialization.
 
 ## Install
 
-When using git, clone the repository and make it your PWD.
+When using git, clone the repository and change your PWD.
 
     git clone http://github.com/mcpcpc/taskbox
     cd taskbox/
 
-Create a virtualenv and activate it.
+Create and activate a virtual environment.
 
     python3 -m venv venv
     source venv/bin/activate
