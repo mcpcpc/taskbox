@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <title>TaskBox</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="A simple UX for TaskBox API interfacing.">
+        <meta name="author" content="Michael Czigler">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon.ico') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}" />
+    </head>
+    <body>
+        <header>
+            <a href="{{ url_for('home.index') }}">
+              <img src="{{ url_for('static', filename='taskbox.png') }}" height="26px" />
+            </a>
+            <h1>TaskBox | <strong>UI</strong></h1>
+        </header>
+        <main>
+            <p>Connect the unit under test to the test box interface and press <em>verify</em>.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Device</th>
+                        <th>Description</th>
+                        <th colspan="1"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.device }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>
+                            <button onclick="taskAction('{{ url_for('tasks.task_action', task_id=task['task_id']) }}')">VERIFY</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+        <script src="{{ url_for('static', filename='requests.js') }}"></script>
+    </body>
+</html>
