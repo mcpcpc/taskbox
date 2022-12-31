@@ -1,4 +1,5 @@
-import unittest
+from unittest import main
+from unittest import TestCase
 
 from taskbox import create_app
 

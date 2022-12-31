@@ -30,9 +30,9 @@ class ApiTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_read_task(self):
-        payload_path = Path(__file__).parent / "payload.sql"
+        path = Path(__file__).parent / "payload.sql"
         db = connect(self.db)
-        db.executescript(payload_path)
+        db.executescript(path)
         response = self.client.get("/api/tasks/1")
         self.assertEqual(response.status_code, 200)
 
@@ -43,9 +43,9 @@ class ApiTestCase(TestCase):
         pass
 
     def test_delete_task(self):
-        payload_path = Path(__file__).parent / "payload.sql"
+        path = Path(__file__).parent / "payload.sql"
         db = connect(self.db)
-        db.executescript(payload_path)
+        db.executescript(path)
         response = self.client.delete("/api/tasks/1")
         self.assertEqual(response.status_code, 200)
 
