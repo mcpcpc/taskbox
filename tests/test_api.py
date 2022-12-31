@@ -47,9 +47,9 @@ class ApiTestCase(TestCase):
         response = self.client.put(
             "/api/tasks/1",
             data={
-                "device": "device1_r",
-                "description": "description1_r",
-                "control": "control1_r",
+                "device": "device1_",
+                "description": "description1_",
+                "control": "control1_",
             },
         )
         self.assertEqual(response.status_code, 201)
