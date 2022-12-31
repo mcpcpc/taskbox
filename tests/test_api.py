@@ -7,7 +7,7 @@ from taskbox import create_app
 
 
 class ApiTestCase(TestCase):
-    @classmethod  
+    @classmethod
     def setUpClass(cls):
         path = Path(__file__).parent / "preload.sql"
         with open(path, mode="r", encoding="utf-8") as f:
@@ -31,7 +31,7 @@ class ApiTestCase(TestCase):
                 "device": "device1",
                 "description": "description1",
                 "control": "control1",
-            }
+            },
         )
         self.assertEqual(response.status_code, 201)
 
@@ -50,7 +50,7 @@ class ApiTestCase(TestCase):
                 "device": "device1_r",
                 "description": "description1_r",
                 "control": "control1_r",
-            }
+            },
         )
         self.assertEqual(response.status_code, 201)
 
