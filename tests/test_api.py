@@ -30,7 +30,7 @@ class ApiTestCase(TestCase):
             data={
                 "device": "device1",
                 "description": "description1",
-                "control": "control1"
+                "control": "control1",
             }
         )
         self.assertEqual(response.status_code, 201)
@@ -49,7 +49,7 @@ class ApiTestCase(TestCase):
             data={
                 "device": "device1_r",
                 "description": "description1_r",
-                "control": "control1_r"
+                "control": "control1_r",
             }
         )
         self.assertEqual(response.status_code, 201)
