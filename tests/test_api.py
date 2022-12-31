@@ -23,7 +23,7 @@ class ApiTestCase(TestCase):
 
     def tearDown(self):
         self.ctx.pop()
- 
+
     def test_create_task(self):
         response = self.client.post(
             "/api/tasks",
