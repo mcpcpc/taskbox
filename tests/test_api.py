@@ -1,10 +1,17 @@
 import unittest
+import sqlite3
 
 from taskbox import create_app
 
 DB_TEST_MEM = {"DATABASE": "file::memory:?cache=shared"}
 
 class ApiTestCase(unittest.TestCase):
+    def setUpClass(self):
+        self.conn = sqlite3.connect(DB_TEST_MEM["DATABASE"])
+
+    def tearDownClass(self):
+        self.conn.close()
+
     def setUp(self):
         self.app = create_app(DB_TEST_MEM)
         self.ctx = self.app.app_context()
