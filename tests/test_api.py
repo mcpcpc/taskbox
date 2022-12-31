@@ -42,10 +42,17 @@ class ApiTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_update_task(self):
-        pass
-
-    def test_update_task_error(self):
-        pass
+        db = connect(self.db)
+        db.executescript(self._preload)
+        response = self.client.put(
+            "/api/tasks/1",
+            data={
+                "device": "device1_r",
+                "description": "description1_r",
+                "control": "control1_r"
+            }
+        )
+        self.assertEqual(response.status_code, 201)
 
     def test_delete_task(self):
         db = connect(self.db)

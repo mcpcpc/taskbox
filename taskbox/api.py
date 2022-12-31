@@ -75,6 +75,27 @@ def read_task(task_id: int):
     return query_db("select * from tasks where task_id = ?", (task_id,))
 
 
+@tasks.put("/tasks/<int:task_id>")
+def update_task(task_id: int):
+    """Update task by identifier.
+
+    Same as task creation but able to update task fields based on the identifier.
+
+    :form device: typically the assembly part number
+    :form description: description of the device
+    :form control: validation content
+
+    """
+    form = request.form.copy()
+    form.add("task_id", task_id)
+    if "file" in request.files:
+        file = request.files["file"].read()
+        form.add("control", file.decode())
+    raw = "UPDATE tasks SET device = :device, description = :description, control = :control WHERE task_id = :task_id"
+    modify_db(raw, form)
+    return "Task updated successfully", 201
+
+
 @tasks.delete("/tasks/<int:task_id>")
 def delete_task(task_id: int):
     """Delete task by identifier.
