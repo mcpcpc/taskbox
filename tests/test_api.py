@@ -2,7 +2,7 @@ import unittest
 
 from taskbox import create_app
 
-DB_TEST_MEM = {"DATABASE": ""}
+DB_TEST_MEM = {"DATABASE": "file::memory:?cache=shared"}
 
 class ApiTestCase(unittest.TestCase):
     def setUp(self):
@@ -16,13 +16,11 @@ class ApiTestCase(unittest.TestCase):
         self.ctx.pop()
 
     def test_db_init_command(self):
-        result = self.runner.invoke(
-            args=["init-db"]
-        )
-        self.assertIn("Initialized", result.output)
+        response = self.runner.invoke(args=["init-db"])
+        self.assertIn("Initialized", response.output)
 
     def test_create_task(self):
-        result = self.client.post(
+        response = self.client.post(
             "/api/tasks",
             data={
                 "device": "device1",
@@ -30,7 +28,7 @@ class ApiTestCase(unittest.TestCase):
                 "control": "control1"
             }
         )
-        self.assertEqual(result.status_code, 200)
+        self.assertEqual(response.status_code, 201)
 
 
 if __name__ == "__main__":
