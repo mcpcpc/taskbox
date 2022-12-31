@@ -4,7 +4,7 @@ from unittest import TestCase
 from taskbox import create_app
 
 
-class InitTestCase(unittest.TestCase):
+class InitTestCase(TestCase):
     def setUp(self):
         self.db = ":memory:"
         self.app = create_app({"DATABASE": self.db})
