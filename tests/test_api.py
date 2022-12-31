@@ -32,7 +32,8 @@ class ApiTestCase(TestCase):
     def test_read_task(self):
         path = Path(__file__).parent / "payload.sql"
         db = connect(self.db)
-        db.executescript(path)
+        with open(path, mode="r", encoding="utf-8") as f:
+            db.executescript(f.read())
         response = self.client.get("/api/tasks/1")
         self.assertEqual(response.status_code, 200)
 
@@ -45,7 +46,8 @@ class ApiTestCase(TestCase):
     def test_delete_task(self):
         path = Path(__file__).parent / "payload.sql"
         db = connect(self.db)
-        db.executescript(path)
+        with open(path, mode="r", encoding="utf-8") as f:
+            db.executescript(f.read())
         response = self.client.delete("/api/tasks/1")
         self.assertEqual(response.status_code, 200)
 
