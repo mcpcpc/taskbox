@@ -1,11 +1,15 @@
-import unittest
+from pathlib import Path
+from sqlite3 import connect
+from unittest import main
+from unittest import TestCase
 
 from taskbox import create_app
 
 
-class ApiTestCase(unittest.TestCase):
+class ApiTestCase(TestCase):
     def setUp(self):
-        self.app = create_app({"DATABASE": ":memory:"})
+        self.db = "file::memory:?cache=shared"
+        self.app = create_app({"DATABASE": self.db})
         self.client = self.app.test_client()
         self.ctx = self.app.app_context()
         self.ctx.push()
@@ -26,7 +30,11 @@ class ApiTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_read_task(self):
-        pass
+        payload_path = Path(__file__).parent / "payload.sql"
+        db = connect(self.db)
+        db.executescript(payload_path)
+        response = self.client.get("/api/tasks/1")
+        self.assertEqual(response.status_code, 200)
 
     def test_update_task(self):
         pass
@@ -35,8 +43,12 @@ class ApiTestCase(unittest.TestCase):
         pass
 
     def test_delete_task(self):
-        pass
+        payload_path = Path(__file__).parent / "payload.sql"
+        db = connect(self.db)
+        db.executescript(payload_path)
+        response = self.client.delete("/api/tasks/1")
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == "__main__":
-    unittest.main()
+    main()

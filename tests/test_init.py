@@ -5,7 +5,8 @@ from taskbox import create_app
 
 class InitTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app({"DATABASE": ":memory:"})
+        self.db = ":memory:"
+        self.app = create_app({"DATABASE": self.db})
         self.runner = self.app.test_cli_runner()
         self.ctx = self.app.app_context()
         self.ctx.push()
