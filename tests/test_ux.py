@@ -28,7 +28,7 @@ class UxTestCase(TestCase):
         db = connect(self.db)
         db.executescript(self._preload)
         response = self.client.get("/")
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
 
 if __name__ == "__main__":
