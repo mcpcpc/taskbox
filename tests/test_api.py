@@ -6,11 +6,13 @@ from taskbox import create_app
 DB_TEST_MEM = {"DATABASE": "file::memory:?cache=shared"}
 
 class ApiTestCase(unittest.TestCase):
-    def setUpClass(self):
-        self.conn = sqlite3.connect(DB_TEST_MEM["DATABASE"])
+    @classmethod
+    def setUpClass(cls):
+        cls._conn = sqlite3.connect(DB_TEST_MEM["DATABASE"])
 
-    def tearDownClass(self):
-        self.conn.close()
+    @classmethod
+    def tearDownClass(cls):
+        cls._conn.close()
 
     def setUp(self):
         self.app = create_app(DB_TEST_MEM)
