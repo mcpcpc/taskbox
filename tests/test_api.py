@@ -7,6 +7,12 @@ from taskbox import create_app
 
 
 class ApiTestCase(TestCase):
+    @classmethod  
+    def setUpClass(cls):
+        path = Path(__file__).parent / "preload.sql"
+        with open(path, mode="r", encoding="utf-8") as f:
+            cls._preload = f.read()
+
     def setUp(self):
         self.db = "file::memory:?cache=shared"
         self.app = create_app({"DATABASE": self.db})
@@ -30,10 +36,8 @@ class ApiTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_read_task(self):
-        path = Path(__file__).parent / "preload.sql"
         db = connect(self.db)
-        with open(path, mode="r", encoding="utf-8") as f:
-            db.executescript(f.read())
+        db.executescript(self._preload)
         response = self.client.get("/api/tasks/1")
         self.assertEqual(response.status_code, 200)
 
@@ -44,10 +48,8 @@ class ApiTestCase(TestCase):
         pass
 
     def test_delete_task(self):
-        path = Path(__file__).parent / "preload.sql"
         db = connect(self.db)
-        with open(path, mode="r", encoding="utf-8") as f:
-            db.executescript(f.read())
+        db.executescript(self._preload)
         response = self.client.delete("/api/tasks/1")
         self.assertEqual(response.status_code, 200)
 
