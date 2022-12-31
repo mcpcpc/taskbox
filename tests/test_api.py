@@ -30,6 +30,18 @@ class ApiTestCase(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 201)
 
+    def test_read_task(self):
+        pass
+
+    def test_update_task(self):
+        pass
+
+    def test_update_task_error(self):
+        pass
+
+    def test_delete_task(self):
+        pass
+
 
 if __name__ == "__main__":
     unittest.main()
