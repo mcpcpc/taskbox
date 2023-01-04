@@ -42,7 +42,8 @@ def read_task(task_id: int):
     task = get_db().execute("select * from tasks where task_id = ?", (task_id,)).fetchone()
     if task is None:
         return f"Task {task_id} does not exist", 404
-    return (task)
+    print(task)
+    return task
 
 
 @tasks.put("/<int:task_id>")
