@@ -10,7 +10,7 @@ from flask import current_app
 
 from taskbox.db import get_db
 
-run = Blueprint("run", __name__, url_prefix="/run")
+run = Blueprint("run", __name__)
 
 
 class Action(Protocol):
@@ -23,7 +23,7 @@ class Action(Protocol):
         ...
 
 
-@run.get("/<name>/<int:task_id>")
+@run.get("/run/<name>/<int:task_id>")
 def action(name: str, task_id: int):
     """Run a specified action by task identifier.
     
@@ -32,7 +32,7 @@ def action(name: str, task_id: int):
     :type task_id: int
     
     """
-    config = get_db().execute("select actions from tasks where task_id = ?", (task_id,))
+    configuration = get_db().execute("select actions from tasks where task_id = ?", (task_id,))
     if "ACTIONS" not in current_app.config:
         return "No ACTIONS provided in config.py", 400
     if name not in current_app.config["ACTIONS"]:
