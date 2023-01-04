@@ -10,12 +10,6 @@ from click import echo
 from flask import current_app
 from flask import g
 
-import sqlite3
-
-import click
-from flask import current_app
-from flask import g
-
 
 def get_db():
     """Connect to the application's configured database. The connection
