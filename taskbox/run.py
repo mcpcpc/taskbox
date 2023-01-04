@@ -32,7 +32,7 @@ def action(name: str, task_id: int):
     :type task_id: int
     
     """
-    configuration = get_db().execute("select actions from tasks where task_id = ?", (task_id,))
+    configuration = get_db().execute("select actions from tasks where task_id = ?", (task_id,)).fetchone()
     if "ACTIONS" not in current_app.config:
         return "No ACTIONS provided in config.py", 400
     if name not in current_app.config["ACTIONS"]:
