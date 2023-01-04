@@ -6,10 +6,10 @@ from flask import request
 
 from taskbox.db import get_db
 
-tasks = Blueprint("tasks", __name__, url_prefix="/tasks")
+tasks = Blueprint("tasks", __name__)
 
 
-@tasks.post("/")
+@tasks.post("/tasks")
 def create_task():
     """Post task to tasks list.
 
@@ -28,7 +28,7 @@ def create_task():
     return "Task created successfully", 201
 
 
-@tasks.get("/<int:task_id>")
+@tasks.get("/tasks/<int:task_id>")
 def read_task(task_id: int):
     """Read task by identifier.
 
@@ -42,11 +42,10 @@ def read_task(task_id: int):
     task = get_db().execute("select * from tasks where task_id = ?", (task_id,)).fetchone()
     if task is None:
         return f"Task {task_id} does not exist", 404
-    print(task)
-    return [task]
+    return dict(task)
 
 
-@tasks.put("/<int:task_id>")
+@tasks.put("/tasks/<int:task_id>")
 def update_task(task_id: int):
     """Update task by identifier.
 
@@ -65,7 +64,7 @@ def update_task(task_id: int):
     return "Task updated successfully", 201
 
 
-@tasks.delete("/<int:task_id>")
+@tasks.delete("/tasks/<int:task_id>")
 def delete_task(task_id: int):
     """Delete task by identifier.
 
