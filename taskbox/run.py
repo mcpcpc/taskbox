@@ -7,6 +7,7 @@ from typing import Protocol
 
 from flask import Blueprint
 from flask import current_app
+from flask import render_template
 
 from taskbox.db import get_db
 
