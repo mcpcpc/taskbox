@@ -39,7 +39,7 @@ def read_task(task_id: int):
     :type task_id: int
 
     """
-    task = get_db.execute("select * from tasks where task_id = ?", (task_id,)).getone()
+    task = get_db().execute("select * from tasks where task_id = ?", (task_id,)).getone()
     if task is None:
         return f"Task {task_id} does not exist", 404
     return task
@@ -60,6 +60,7 @@ def update_task(task_id: int):
     form.add("task_id", task_id)
     db = get_db()
     db.execute("UPDATE tasks SET device = :device, description = :description, actions = :actions WHERE task_id = :task_id", form)
+    db.commit()
     return "Task updated successfully", 201
 
 
