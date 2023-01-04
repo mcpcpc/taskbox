@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-    {% for task in tasks %}
+    {% for task in tasks|sort(attribute="device") %}
         <tr>
             <td>{{ task.device }}</td>
             <td>{{ task.description }}</td>
