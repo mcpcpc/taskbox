@@ -18,7 +18,9 @@
             <td>{{ task.device }}</td>
             <td>{{ task.description }}</td>
             <td>
-                <button onclick="taskAction('{{ url_for('run.action', task_id=task['task_id'], name='verify') }}')">VERIFY</button>
+                {% for action in (task.actions|fromjson) %}
+                <button onclick="taskAction('{{ url_for('run.action', task_id=task['task_id'], name=action) }}')">{{ action }}</button>
+                {% endfor %}
             </td>
         </tr>
     {% endfor %}

@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from dataclasses import dataclass
-from typing import Protocol
 from json import loads
+from typing import Protocol
 
 from flask import Blueprint
 from flask import current_app
@@ -42,3 +42,14 @@ def action(name: str, task_id: int):
         return "Does not conform to Action interface", 400
     obj_loaded = obj(loads(task["actions"]))
     return obj_loaded.jsonify()
+
+
+@run.app_template_filter()
+def fromjson(json_string):
+    return loads(json_string)
+
+
+@run.get("/")
+def index():
+    tasks = get_db().execute("SELECT * FROM tasks").fetchall()
+    return render_template("index.html", tasks=tasks)
