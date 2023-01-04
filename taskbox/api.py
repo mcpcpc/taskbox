@@ -43,7 +43,7 @@ def read_task(task_id: int):
     if task is None:
         return f"Task {task_id} does not exist", 404
     print(task)
-    return task
+    return [task]
 
 
 @tasks.put("/<int:task_id>")
