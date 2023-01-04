@@ -19,7 +19,7 @@ def create_task():
 
     :form device: typically the assembly part number
     :form description: description of the device
-    :form control: validation content
+    :form actions: JSON string formatted action configuration
 
     """
     db = get_db()
@@ -53,7 +53,7 @@ def update_task(task_id: int):
 
     :form device: typically the assembly part number
     :form description: description of the device
-    :form control: validation content
+    :form actions: JSON string formatted action configuration
 
     """
     db = get_db()

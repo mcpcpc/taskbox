@@ -30,7 +30,7 @@ class ApiTestCase(TestCase):
 
     def test_create_task(self):
         response = self.client.post(
-            "/api/tasks",
+            "/tasks",
             data={
                 "device": "device1",
                 "description": "description1",
@@ -42,14 +42,14 @@ class ApiTestCase(TestCase):
     def test_read_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.get("/api/tasks/1")
+        response = self.client.get("/tasks/1")
         self.assertEqual(response.status_code, 200)
 
     def test_update_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
         response = self.client.put(
-            "/api/tasks/1",
+            "/tasks/1",
             data={
                 "device": "device1_",
                 "description": "description1_",
@@ -61,7 +61,7 @@ class ApiTestCase(TestCase):
     def test_delete_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.delete("/api/tasks/1")
+        response = self.client.delete("/tasks/1")
         self.assertEqual(response.status_code, 200)
 
 
