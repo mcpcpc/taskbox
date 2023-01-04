@@ -11,5 +11,5 @@ home = Blueprint("home", __name__)
 
 @home.get("/")
 def index():
-    tasks = get_db().execute("select * from tasks").fetchall()
+    tasks = get_db().execute("SELECT * FROM tasks").fetchall()
     return render_template("index.html", tasks=tasks)
