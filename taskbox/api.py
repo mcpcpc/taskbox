@@ -57,7 +57,7 @@ def update_task(task_id: int):
 
     """
     db = get_db()
-    db.execute("UPDATE tasks SET device = :device, description = :description, actions = :actions WHERE task_id = :task_id", request.form)
+    db.execute("UPDATE tasks SET device = :device, description = :description, actions = :actions WHERE task_id = :task_id", request.form.copy().add("task_id", task_id))
     return "Task updated successfully", 201
 
 
