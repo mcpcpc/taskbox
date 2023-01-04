@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from pathlib import Path
 from sqlite3 import connect
 from unittest import main

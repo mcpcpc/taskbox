@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from pathlib import Path
 from sqlite3 import connect
 from unittest import main
@@ -9,7 +12,8 @@ from taskbox import create_app
 class ApiTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
-        path = Path(__file__).parent / "preload.sql"
+        cls._resources = Path(__file__).parent
+        path = cls._resources / "preload.sql"
         with open(path, mode="r", encoding="utf-8") as f:
             cls._preload = f.read()
 
@@ -30,7 +34,7 @@ class ApiTestCase(TestCase):
             data={
                 "device": "device1",
                 "description": "description1",
-                "control": "control1",
+                "actions": "actions1",
             },
         )
         self.assertEqual(response.status_code, 201)
@@ -49,7 +53,7 @@ class ApiTestCase(TestCase):
             data={
                 "device": "device1_",
                 "description": "description1_",
-                "control": "control1_",
+                "actions": "actions1_",
             },
         )
         self.assertEqual(response.status_code, 201)

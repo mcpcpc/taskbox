@@ -1,45 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pathlib import Path
-
 from flask import Blueprint
 from flask import request
 
-from taskbox.db import modify_db
-from taskbox.db import query_db
+from taskbox.db import get_db
 
-tasks = Blueprint("tasks", __name__, url_prefix="/api")
-
-
-def get_slaves(base: str) -> str:
-    """Read the list of connected slave EPROMs to master."""
-    path = next(Path(base).glob("w1_bus_master*/w1_master_slaves"))
-    with open(path, "r") as file:
-        content = file.read()
-    return content.strip()
+tasks = Blueprint("tasks", __name__, url_prefix="/tasks")
 
 
-def get_nvmem(base: str, slave: str) -> str:
-    """Read byte content of attached 1-wire EPROM."""
-    path = Path(base) / slave / slave / "nvmem"
-    content = b""
-    with open(path, "rb") as file:
-        file.seek(32)
-        while chunk := file.read(32):
-            content += chunk[1:-3]
-    return content.rstrip(b"\xff")[:-3]
-
-
-def verify(reference: str, test: str) -> str:
-    """Verify content of reference and test string."""
-    if reference == test:
-        return "Match"
-    else:
-        return "Does not match"
-
-
-@tasks.post("/tasks")
+@tasks.post("/")
 def create_task():
     """Post task to tasks list.
 
@@ -52,16 +22,13 @@ def create_task():
     :form control: validation content
 
     """
-    form = request.form.copy()
-    if "file" in request.files:
-        file = request.files["file"].read()
-        form.add("control", file.decode())
-    raw = "INSERT INTO tasks (device, description, control) VALUES (:device, :description, :control)"
-    modify_db(raw, form)
+    db = get_db()
+    db.execute("INSERT INTO tasks (device, description, actions) VALUES (:device, :description, :actions)", request.form)
+    db.commit()
     return "Task created successfully", 201
 
 
-@tasks.get("/tasks/<int:task_id>")
+@tasks.get("/<int:task_id>")
 def read_task(task_id: int):
     """Read task by identifier.
 
@@ -72,10 +39,13 @@ def read_task(task_id: int):
     :type task_id: int
 
     """
-    return query_db("select * from tasks where task_id = ?", (task_id,))
+    task = get_db.execute("select * from tasks where task_id = ?", (task_id,)).getone()
+    if task is None:
+        return f"Task {task_id} does not exist", 404
+    return task
 
 
-@tasks.put("/tasks/<int:task_id>")
+@tasks.put("/<int:task_id>")
 def update_task(task_id: int):
     """Update task by identifier.
 
@@ -86,17 +56,12 @@ def update_task(task_id: int):
     :form control: validation content
 
     """
-    form = request.form.copy()
-    form.add("task_id", task_id)
-    if "file" in request.files:
-        file = request.files["file"].read()
-        form.add("control", file.decode())
-    raw = "UPDATE tasks SET device = :device, description = :description, control = :control WHERE task_id = :task_id"
-    modify_db(raw, form)
+    db = get_db()
+    db.execute("UPDATE tasks SET device = :device, description = :description, actions = :actions WHERE task_id = :task_id", request.form)
     return "Task updated successfully", 201
 
 
-@tasks.delete("/tasks/<int:task_id>")
+@tasks.delete("/<int:task_id>")
 def delete_task(task_id: int):
     """Delete task by identifier.
 
@@ -108,26 +73,7 @@ def delete_task(task_id: int):
     :type task_id: int
 
     """
-    modify_db("delete from tasks where task_id = ?", (task_id,))
-    return f"Task id={task_id} deleted successfully"
-
-
-@tasks.get("/tasks/<int:task_id>/action")
-def task_action(task_id: int):
-    """Get task action.
-
-    Returns the results of a specified action, configured per the task identifiers
-    parameters.
-
-    :param task_id: task identifier
-    :type task_id: int
-
-    """
-    control = query_db("select control from tasks where task_id = ?", (task_id,))
-    base = "/sys/bus/w1/devices"
-    slave = get_slaves(base)
-    if "not found" in slave:
-        return "No device connected"
-    nvmem = get_nvmem(base, slave)
-    validation = verify(control[0][0], nvmem.decode(errors="replace"))
-    return [slave, validation]
+    db = get_db()
+    db.execute("DELETE FROM tasks WHERE task_id = ?", (task_id,))
+    db.commit()
+    return "Task deleted successfully"

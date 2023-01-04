@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from unittest import main
 from unittest import TestCase
 
@@ -14,6 +17,10 @@ class InitTestCase(TestCase):
 
     def tearDown(self):
         self.ctx.pop()
+
+    def test_db_close(self):
+        result = self.ctx.g.get("db")
+        self.assertIsNone(result, result)
 
     def test_db_init_command(self):
         response = self.runner.invoke(args=["init-db"])
