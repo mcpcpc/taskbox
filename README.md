@@ -52,7 +52,21 @@ flask —app taskbox init-db
 
 Production WSGI via waitress.
 
-```
+```shell
 pip install waitress
-waitress-serve —call ‘taskbox:create_app’
+waitress-serve —call taskbox:create_app
+```
+
+## Test
+
+```shell
+python3 -m unittest
+```
+
+Run with coverage report.
+
+```shell
+coverage run -m pytest
+coverage report
+coverage html  # open htmlcov/index.html in a browser
 ```
