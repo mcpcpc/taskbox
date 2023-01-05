@@ -1,4 +1,4 @@
-include LICENSE.md
+include LICENSE
 include taskbox/schema.sql
 graft taskbox/static
 graft taskbox/templates
