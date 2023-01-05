@@ -23,7 +23,10 @@ def create_task():
 
     """
     db = get_db()
-    db.execute("INSERT INTO tasks (device, description, actions) VALUES (:device, :description, :actions)", request.form)
+    db.execute(
+        "INSERT INTO tasks (device, description, actions) VALUES (:device, :description, :actions)",
+        request.form,
+    )
     db.commit()
     return "Task created successfully", 201
 
@@ -39,7 +42,9 @@ def read_task(task_id: int):
     :type task_id: int
 
     """
-    task = get_db().execute("select * from tasks where task_id = ?", (task_id,)).fetchone()
+    task = (
+        get_db().execute("select * from tasks where task_id = ?", (task_id,)).fetchone()
+    )
     if task is None:
         return f"Task {task_id} does not exist", 404
     return dict(task)
@@ -59,7 +64,10 @@ def update_task(task_id: int):
     form = request.form.copy()
     form.add("task_id", task_id)
     db = get_db()
-    db.execute("UPDATE tasks SET device = :device, description = :description, actions = :actions WHERE task_id = :task_id", form)
+    db.execute(
+        "UPDATE tasks SET device = :device, description = :description, actions = :actions WHERE task_id = :task_id",
+        form,
+    )
     db.commit()
     return "Task updated successfully", 201
 

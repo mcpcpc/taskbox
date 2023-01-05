@@ -28,12 +28,7 @@ class RunTestCase(TestCase):
 
     def setUp(self):
         self.db = "file::memory:?cache=shared"
-        self.app = create_app(
-            {
-                "DATABASE": self.db,
-                "ACTIONS": {"dummy": Dummy}
-            }
-        )
+        self.app = create_app({"DATABASE": self.db, "ACTIONS": {"dummy": Dummy}})
         self.client = self.app.test_client()
         self.ctx = self.app.app_context()
         self.ctx.push()
