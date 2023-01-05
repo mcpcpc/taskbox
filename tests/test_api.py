@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from pathlib import Path
 from sqlite3 import connect
 from unittest import main
@@ -9,7 +12,8 @@ from taskbox import create_app
 class ApiTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
-        path = Path(__file__).parent / "preload.sql"
+        cls._resources = Path(__file__).parent
+        path = cls._resources / "preload.sql"
         with open(path, mode="r", encoding="utf-8") as f:
             cls._preload = f.read()
 
@@ -26,11 +30,11 @@ class ApiTestCase(TestCase):
 
     def test_create_task(self):
         response = self.client.post(
-            "/api/tasks",
+            "/tasks",
             data={
                 "device": "device1",
                 "description": "description1",
-                "control": "control1",
+                "actions": "actions1",
             },
         )
         self.assertEqual(response.status_code, 201)
@@ -38,18 +42,24 @@ class ApiTestCase(TestCase):
     def test_read_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.get("/api/tasks/1")
+        response = self.client.get("/tasks/1")
         self.assertEqual(response.status_code, 200)
+
+    def test_read_task_doesnt_exist(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        response = self.client.get("/tasks/2")
+        self.assertEqual(response.status_code, 404)
 
     def test_update_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
         response = self.client.put(
-            "/api/tasks/1",
+            "/tasks/1",
             data={
                 "device": "device1_",
                 "description": "description1_",
-                "control": "control1_",
+                "actions": "actions1_",
             },
         )
         self.assertEqual(response.status_code, 201)
@@ -57,7 +67,7 @@ class ApiTestCase(TestCase):
     def test_delete_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.delete("/api/tasks/1")
+        response = self.client.delete("/tasks/1")
         self.assertEqual(response.status_code, 200)
 
 

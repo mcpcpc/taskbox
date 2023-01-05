@@ -1,2 +1,2 @@
-INSERT INTO [tasks] (device, description, control)
-VALUES ('device1', 'description1', 'control1');
+INSERT INTO [tasks] (device, description, actions)
+VALUES ('device1', 'description1', '{"dummy": {}}');

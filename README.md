@@ -45,7 +45,7 @@ new database file will be placed in the `/tmp/taskbox.sqlite`
 directory.
 
 ```shell
-flask --app taskbox init-db
+flask —app taskbox init-db
 ```
 
 ## Deployment
@@ -54,5 +54,5 @@ Production WSGI via waitress.
 
 ```
 pip install waitress
-waitress-serve --call 'taskbox:create_app'
+waitress-serve —call ‘taskbox:create_app’
 ```
