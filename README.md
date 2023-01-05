@@ -39,10 +39,7 @@ pip install -e .
 ### db-init
 
 The Sqlite3 database can be initialized or re-initialized with the
-following command. Note that the default target path can be changed
-by defining `DB_PATH` in the environment variables. By default, a
-new database file will be placed in the `/tmp/taskbox.sqlite`
-directory.
+following command.
 
 ```shell
 flask —app taskbox init-db
@@ -52,7 +49,21 @@ flask —app taskbox init-db
 
 Production WSGI via waitress.
 
-```
+```shell
 pip install waitress
-waitress-serve —call ‘taskbox:create_app’
+waitress-serve —call taskbox:create_app
+```
+
+## Test
+
+```shell
+python3 -m unittest
+```
+
+Run with coverage report.
+
+```shell
+coverage run -m pytest
+coverage report
+coverage html  # open htmlcov/index.html in a browser
 ```
