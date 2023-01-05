@@ -45,6 +45,12 @@ class ApiTestCase(TestCase):
         response = self.client.get("/tasks/1")
         self.assertEqual(response.status_code, 200)
 
+    def test_read_task_doesnt_exist(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        response = self.client.get("/tasks/2")
+        self.assertEqual(response.status_code, 404)
+
     def test_update_task(self):
         db = connect(self.db)
         db.executescript(self._preload)

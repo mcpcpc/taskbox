@@ -37,6 +37,12 @@ class RunTestCase(TestCase):
     def tearDown(self):
         self.ctx.pop()
 
+    def test_run_index(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+
     def test_run_action(self):
         db = connect(self.db)
         db.executescript(self._preload)
