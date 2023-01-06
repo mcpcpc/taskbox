@@ -28,7 +28,7 @@ def run_task(id: int):
     cmd = task["cmd"]
     result = run(cmd.split(","), stdout=PIPE)
     flash(result.stdout)
-    return redirect(url_for("tasks.get_index"))
+    return redirect(url_for("tasks.get_tasks"))
 
 
 @tasks.post("/tasks")
