@@ -9,16 +9,7 @@ from unittest import TestCase
 from taskbox import create_app
 
 
-class Dummy:
-    def __init__(self, configuration):
-        self.configuration = configuration
-
-    @classmethod
-    def jsonify(self):
-        return "OK"
-
-
-class RunTestCase(TestCase):
+class RunnerTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         cls._resources = Path(__file__).parent
@@ -28,9 +19,7 @@ class RunTestCase(TestCase):
 
     def setUp(self):
         self.db = "file::memory:?cache=shared"
-        self.app = create_app(
-            {"TESTING": True, "DATABASE": self.db, "ACTIONS": {"dummy": Dummy}}
-        )
+        self.app = create_app({"TESTING": True, "DATABASE": self.db})
         self.client = self.app.test_client()
         self.ctx = self.app.app_context()
         self.ctx.push()
@@ -39,7 +28,7 @@ class RunTestCase(TestCase):
     def tearDown(self):
         self.ctx.pop()
 
-    def test_run_index(self):
+    def test_runner_index(self):
         db = connect(self.db)
         db.executescript(self._preload)
         response = self.client.get("/")
@@ -48,5 +37,5 @@ class RunTestCase(TestCase):
     def test_run_action(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.get("/run/dummy/1")
+        response = self.client.get("/run/1")
         self.assertEqual(response.status_code, 200)

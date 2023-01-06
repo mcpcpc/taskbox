@@ -9,7 +9,7 @@
         <tr>
             <th>Device</th>
             <th>Description</th>
-            <th colspan="1"></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -17,9 +17,11 @@
         <tr>
             <td>{{ device_name }}</td>
             <td>{{ (tasks|first)["device_description"] }}</td>
+	    <td>
 	    {% for task in tasks %}
-	    <td><a class="button" href={{ url_for('runner.run_task', id=task['task_id']) }}>{{task.task_name}}</a></td>
+		    <a href={{ url_for('runner.run_task', id=task['task_id']) }}>{{task.task_name}}</a>
             {% endfor %}
+	    </td>
         </tr>
     {% endfor %}
     </tbody>

@@ -16,9 +16,20 @@ body {
 table {width: 100%}
 
 th, td {
-  padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+}
+td a {
+	background-color: var(--color-secondary);
+	text-decoration: none;
+	text-transform: capitalize;
+	color: var(--color-background);
+	padding: 0.6em;
+	margin: 0.4em;
+	cursor: pointer;
+	font-size: 0.7em;
+	border-radius: 5px;
+	display: inline-block;
 }
 
 p {line-height: 1.5em}
@@ -35,7 +46,7 @@ header {
   background-color: var(--color-secondary);
 }
 
-header h1 {
+h1 {
   font-weight: 400;
   font-size: 30px;
   color: var(--color-background);
@@ -55,23 +66,6 @@ main {
   margin: 90px auto; 
   padding:20px;
   max-width:900px;
-}
-
-.button {
-  border: none;
-  color: white;
-  padding: 0.5em;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8em;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
-  background-color: var(--color-primary);
-  color: var(--color-background);
 }
 
 .flash {

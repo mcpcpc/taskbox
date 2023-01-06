@@ -22,9 +22,7 @@ def create_device():
 
 @devices.get("/devices/<int:id>")
 def read_device(id: int):
-    device = (
-        get_db().execute("select * from devices where id = ?", (id,)).fetchone()
-    )
+    device = get_db().execute("select * from devices where id = ?", (id,)).fetchone()
     if device is None:
         return f"Device {id} does not exist", 404
     return dict(device)

@@ -22,7 +22,7 @@ def create_task():
 
 @tasks.get("/tasks/<int:id>")
 def read_task(id: int):
-    task = (get_db().execute("select * from tasks where id = ?", (id,)).fetchone())
+    task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
     if task is None:
         return f"Task {id} does not exist", 404
     return dict(task)
