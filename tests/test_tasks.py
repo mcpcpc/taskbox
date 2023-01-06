@@ -33,7 +33,7 @@ class TasksTestCase(TestCase):
             "/tasks",
             data={
                 "name": "name1",
-                "cmd": "echo, hello world",
+                "command": "echo, hello world",
                 "device_id": 1,
             },
         )
@@ -58,7 +58,7 @@ class TasksTestCase(TestCase):
             "/tasks/1",
             data={
                 "name": "name1_",
-                "cmd": "echo, hello world_",
+                "command": "echo, hello world_",
                 "device_id": 1,
             },
         )

@@ -25,7 +25,7 @@ def index():
 @runner.get("/run/<int:id>")
 def run_task(id: int):
     task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
-    cmd = task["cmd"]
-    result = run(cmd.split(","), stdout=PIPE)
+    command = task["command"]
+    result = run(command.split(","), stdout=PIPE)
     flash(result.stdout.decode())
     return redirect(url_for("runner.index"))

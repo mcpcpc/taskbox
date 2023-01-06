@@ -38,4 +38,4 @@ class RunnerTestCase(TestCase):
         db = connect(self.db)
         db.executescript(self._preload)
         response = self.client.get("/run/1")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["location"], "/")

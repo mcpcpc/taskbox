@@ -13,7 +13,7 @@ tasks = Blueprint("tasks", __name__)
 def create_task():
     db = get_db()
     db.execute(
-        "INSERT INTO tasks (name, cmd, device_id) VALUES (:name, :cmd, :device_id)",
+        "INSERT INTO tasks (name, command, device_id) VALUES (:name, :command, :device_id)",
         request.form,
     )
     db.commit()
@@ -34,7 +34,7 @@ def update_task(id: int):
     form.add("id", id)
     db = get_db()
     db.execute(
-        "UPDATE tasks SET name = :name, cmd = :cmd, device_id = :device_id WHERE id = :id",
+        "UPDATE tasks SET name = :name, command = :command, device_id = :device_id WHERE id = :id",
         form,
     )
     db.commit()
