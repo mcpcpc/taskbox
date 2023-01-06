@@ -14,7 +14,7 @@
             <a href="/">
               <img src="{{ url_for('static', filename='taskbox.png') }}" height="26px" />
             </a>
-	    <h1>TaskBox | <strong>UX</strong></h1>
+	        <h1>TaskBOX | <strong>{% block h1 }{% endblock %}</strong></h1>
         </header>
         <main>
             {% block main %}{% endblock %}
