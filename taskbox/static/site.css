@@ -13,23 +13,6 @@ body {
   color: var(--color-foreground);
 }
 
-button {
-  border: none;
-  color: white;
-  padding: 0.5em;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 0.8em;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
-  background-color: var(--color-primary);
-  color: var(--color-background);
-}
-
 table {width: 100%}
 
 th, td {
@@ -74,9 +57,43 @@ main {
   max-width:900px;
 }
 
-.flash {
-  margin: 1em 0;
-  padding: 1em;
-  background: #cae6f6;
-  border: 1px solid #377ba8;
+.button {
+  border: none;
+  color: white;
+  padding: 0.5em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.8em;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
+  background-color: var(--color-primary);
+  color: var(--color-background);
 }
+
+.flash {
+  padding: 1em;
+  background: var(--color-secondary-light);
+  position: absolute;
+  z-index: 101;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  animation: hideAnimation 0s ease-in 3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hideAnimation {
+  to {
+     visibility: hidden;
+     width: 0;
+     height: 0;
+  }
+}
+
+
+
