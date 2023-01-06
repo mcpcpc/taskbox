@@ -26,9 +26,10 @@ CREATE TABLE tasks (
 	FOREIGN KEY(device_id) REFERENCES devices(id)
 );
 
-CREATE VIEW tasks_v AS SELECT 
+CREATE VIEW tasks_v AS SELECT
 	devices.name AS device_name,
 	devices.description AS device_description,
+	tasks.id as task_id,
 	tasks.name AS task_name
 FROM devices
 INNER JOIN tasks ON tasks.device_id = devices.id;

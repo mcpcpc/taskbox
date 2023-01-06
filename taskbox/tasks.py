@@ -4,6 +4,7 @@
 from subprocess import run
 
 from flask import Blueprint
+from flask import flash
 from flask import request
 from flask import render_template
 
@@ -20,9 +21,10 @@ def get_tasks():
 
 @tasks.get("/run/<int:id>")
 def run_task(id: int):
-    cmd = get_db.execute("select cmd from tasks where id = ?", (id,)).fetchone()
+    cmd = get_db().execute("select cmd from tasks where id = ?", (id,)).fetchone()
     result = run(cmd.split(","), capture_output=True)
-    return str(result)
+    flash(result)
+    return redirect(url_for("tasks.get_index"))
 
 
 @tasks.post("/tasks")
