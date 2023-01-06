@@ -6,6 +6,7 @@ from os import makedirs
 
 from flask import Flask
 
+from taskbox.auth import auth
 from taskbox.db import init_app
 from taskbox.devices import devices
 from taskbox.runner import runner
