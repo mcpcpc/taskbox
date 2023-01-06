@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from subprocess import run
+from subprocess import PIPE
 
 from flask import Blueprint
 from flask import flash
@@ -23,9 +24,8 @@ def get_tasks():
 def run_task(id: int):
     task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
     cmd = task["cmd"]
-    result = run(cmd.split(","), capture_output=True)
-    print(result)
-    flash(result)
+    result = run(cmd.split(","), stdout=PIPE)
+    flash(result.stdout)
     return redirect(url_for("tasks.get_index"))
 
 
