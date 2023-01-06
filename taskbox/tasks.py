@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from subprocess import run
+
 from flask import Blueprint
 from flask import request
 from flask import render_template
@@ -16,11 +18,18 @@ def get_tasks():
     return render_template("index.html", tasks_v=tasks_v)
 
 
+@tasks.get("/run/<int:id>")
+def run_task(id: int):
+    cmd = get_db.execute("select cmd from tasks where id = ?", (id,)).fetchone()
+    result = run(cmd.split(","), capture_output=True)
+    return str(result)
+
+
 @tasks.post("/tasks")
 def create_task():
     db = get_db()
     db.execute(
-            "INSERT INTO tasks (name, script, device_id) VALUES (:name, :script, :device_id)",
+        "INSERT INTO tasks (name, cmd, device_id) VALUES (:name, :cmd, :device_id)",
         request.form,
     )
     db.commit()
@@ -29,9 +38,7 @@ def create_task():
 
 @tasks.get("/tasks/<int:id>")
 def read_task(id: int):
-    task = (
-        get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
-    )
+    task = (get_db().execute("select * from tasks where id = ?", (id,)).fetchone())
     if task is None:
         return f"Task {id} does not exist", 404
     return dict(task)
@@ -43,7 +50,7 @@ def update_task(id: int):
     form.add("id", id)
     db = get_db()
     db.execute(
-            "UPDATE tasks SET name = :name, script = :script, device_id = :device_id WHERE id = :id",
+        "UPDATE tasks SET name = :name, cmd = :cmd, device_id = :device_id WHERE id = :id",
         form,
     )
     db.commit()

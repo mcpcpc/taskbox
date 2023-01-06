@@ -21,7 +21,7 @@ CREATE TABLE users (
 CREATE TABLE tasks (
 	id INTEGER PRIMARY KEY,
 	name TEXT NOT NULL UNIQUE,
-	script TEXT NOT NULL UNIQUE,
+	cmd TEXT NOT NULL UNIQUE,
 	device_id INTEGER NOT NULL,
 	FOREIGN KEY(device_id) REFERENCES devices(id)
 );
@@ -29,7 +29,6 @@ CREATE TABLE tasks (
 CREATE VIEW tasks_v AS SELECT 
 	devices.name AS device_name,
 	devices.description AS device_description,
-	tasks.name AS task_name,
-	tasks.script AS task_script
+	tasks.name AS task_name
 FROM devices
 INNER JOIN tasks ON tasks.device_id = devices.id;
