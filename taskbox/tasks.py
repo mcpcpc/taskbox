@@ -1,34 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import run
-from subprocess import PIPE
-
 from flask import Blueprint
-from flask import flash
-from flask import redirect
 from flask import request
-from flask import render_template
-from flask import url_for
 
 from taskbox.db import get_db
 
 tasks = Blueprint("tasks", __name__)
-
-
-@tasks.get("/")
-def get_tasks():
-    tasks_v = get_db().execute("select * from tasks_v").fetchall()
-    return render_template("index.html", tasks_v=tasks_v)
-
-
-@tasks.get("/run/<int:id>")
-def run_task(id: int):
-    task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
-    cmd = task["cmd"]
-    result = run(cmd.split(","), stdout=PIPE)
-    flash(result.stdout.decode())
-    return redirect(url_for("tasks.get_tasks"))
 
 
 @tasks.post("/tasks")

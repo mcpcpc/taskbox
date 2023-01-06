@@ -8,6 +8,7 @@ from flask import Flask
 
 from taskbox.db import init_app
 from taskbox.devices import devices
+from taskbox.runner import runner
 from taskbox.tasks import tasks
 
 
@@ -30,5 +31,6 @@ def create_app(
         pass
     init_app(app)
     app.register_blueprint(devices)
+    app.register_blueprint(runner)
     app.register_blueprint(tasks)
     return app
