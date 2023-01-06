@@ -9,7 +9,7 @@ from unittest import TestCase
 from taskbox import create_app
 
 
-class ApiTestCase(TestCase):
+class DevicesTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         cls._resources = Path(__file__).parent
@@ -19,7 +19,7 @@ class ApiTestCase(TestCase):
 
     def setUp(self):
         self.db = "file::memory:?cache=shared"
-        self.app = create_app({"DATABASE": self.db})
+        self.app = create_app({"TESTING": True, "DATABASE": self.db})
         self.client = self.app.test_client()
         self.ctx = self.app.app_context()
         self.ctx.push()
@@ -28,38 +28,36 @@ class ApiTestCase(TestCase):
     def tearDown(self):
         self.ctx.pop()
 
-    def test_create_task(self):
+    def test_create_device(self):
         response = self.client.post(
-            "/tasks",
+            "/devices",
             data={
-                "device": "device1",
+                "name": "name1",
                 "description": "description1",
-                "actions": "actions1",
             },
         )
         self.assertEqual(response.status_code, 201)
 
-    def test_read_task(self):
+    def test_read_device(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.get("/tasks/1")
+        response = self.client.get("/devices/1")
         self.assertEqual(response.status_code, 200)
 
-    def test_read_task_doesnt_exist(self):
+    def test_read_device_doesnt_exist(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.get("/tasks/2")
+        response = self.client.get("/devices/2")
         self.assertEqual(response.status_code, 404)
 
-    def test_update_task(self):
+    def test_update_device(self):
         db = connect(self.db)
         db.executescript(self._preload)
         response = self.client.put(
-            "/tasks/1",
+            "/devices/1",
             data={
-                "device": "device1_",
+                "name": "name1_",
                 "description": "description1_",
-                "actions": "actions1_",
             },
         )
         self.assertEqual(response.status_code, 201)
@@ -67,7 +65,7 @@ class ApiTestCase(TestCase):
     def test_delete_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.delete("/tasks/1")
+        response = self.client.delete("/devices/1")
         self.assertEqual(response.status_code, 200)
 
 

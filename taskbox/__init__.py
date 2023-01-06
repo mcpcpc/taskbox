@@ -7,9 +7,9 @@ from os import makedirs
 from flask import Flask
 
 from taskbox.db import init_app
-
-from taskbox.run import run
-from taskbox.api import tasks
+from taskbox.devices import devices
+from taskbox.runner import runner
+from taskbox.tasks import tasks
 
 
 def create_app(
@@ -30,6 +30,7 @@ def create_app(
     except OSError:
         pass
     init_app(app)
-    app.register_blueprint(run)
+    app.register_blueprint(devices)
+    app.register_blueprint(runner)
     app.register_blueprint(tasks)
     return app

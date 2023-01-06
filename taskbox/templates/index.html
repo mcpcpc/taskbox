@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% block title %}UX{% endblock %}
 {% block main %}
 
 <p>Connect the unit under test to the test box interface and press <em>verify</em>.</p>
@@ -9,19 +9,19 @@
         <tr>
             <th>Device</th>
             <th>Description</th>
-            <th colspan="1"></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-    {% for task in tasks|sort(attribute="device") %}
+    {% for device_name, tasks in tasks_v|groupby("device_name") %}
         <tr>
-            <td>{{ task.device }}</td>
-            <td>{{ task.description }}</td>
-            <td>
-                {% for action in (task.actions|fromjson) %}
-                <button onclick="taskAction('{{ url_for('run.action', task_id=task['task_id'], name=action) }}')">{{ action }}</button>
-                {% endfor %}
-            </td>
+            <td>{{ device_name }}</td>
+            <td>{{ (tasks|first)["device_description"] }}</td>
+	    <td>
+	    {% for task in tasks %}
+		    <a href={{ url_for('runner.run_task', id=task['task_id']) }}>{{task.task_name}}</a>
+            {% endfor %}
+	    </td>
         </tr>
     {% endfor %}
     </tbody>
