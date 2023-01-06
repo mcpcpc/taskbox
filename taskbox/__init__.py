@@ -31,6 +31,7 @@ def create_app(
     except OSError:
         pass
     init_app(app)
+    app.register_blueprint(auth)
     app.register_blueprint(devices)
     app.register_blueprint(runner)
     app.register_blueprint(tasks)
