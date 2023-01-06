@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash
 
 from taskbox.db import get_db
 
-auth = Blueprint("auth", __name__, url_prefix="/auth")
+auth = Blueprint("auth", __name__)
 
 
 def login_required(view):
@@ -40,7 +40,7 @@ def load_logged_in_user():
         )
 
 
-@auth.route("/register", methods=("GET", "POST"))
+@auth.route("/auth/register", methods=("GET", "POST"))
 def register():
     """Register a new user.
 
@@ -71,7 +71,7 @@ def register():
     return render_template("register.html")
 
 
-@auth.route("/login", methods=("GET", "POST"))
+@auth.route("/auth/login", methods=("GET", "POST"))
 def login():
     """Log in a registered user by adding the user id to the session."""
     if request.method == "POST":
@@ -94,7 +94,7 @@ def login():
     return render_template("login.html")
 
 
-@auth.route("/logout")
+@auth.route("/auth/logout")
 def logout():
     """Clear the current session, including the stored user id."""
     session.clear()
