@@ -24,6 +24,7 @@ def run_task(id: int):
     task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
     cmd = task["cmd"]
     result = run(cmd.split(","), capture_output=True)
+    print(result)
     flash(result)
     return redirect(url_for("tasks.get_index"))
 
