@@ -18,7 +18,7 @@
             <td>{{ device_name }}</td>
             <td>{{ (tasks|first)["device_description"] }}</td>
 	    {% for task in tasks %}
-	    <td><button onclick={{ url_for('tasks.run_task', id=task['task_id']) }}>{{task.task_name}}</button></td>
+	    <td><button onclick={{ url_for('runner.run_task', id=task['task_id']) }}>{{task.task_name}}</button></td>
             {% endfor %}
         </tr>
     {% endfor %}
