@@ -27,7 +27,7 @@ def run_task(id: int):
     task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
     cmd = task["cmd"]
     result = run(cmd.split(","), stdout=PIPE)
-    flash(result.stdout)
+    flash(result.stdout.decode())
     return redirect(url_for("tasks.get_tasks"))
 
 
