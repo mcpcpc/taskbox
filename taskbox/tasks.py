@@ -6,7 +6,7 @@ from subprocess import PIPE
 
 from flask import Blueprint
 from flask import flash
-from flask import redict
+from flask import redirect
 from flask import request
 from flask import render_template
 from flask import url_for
