@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
-{% block h1 %}{% block title %}Login{% endblock %}{% endblock %}
+{% block title %}Login{% endblock %}
 {% block main %}
+<h2>User Login</h2>
+<p>Welcome back! Please provide valid credentials to access additional tools.</p>
 <form method="post">
-    <input name="username" placeholder="Username" required>
-    <input name="password" placeholder="Password" type="password" required>
-    <button>Log In</button>
+	<input name="username" placeholder="Username" required>
+	<input name="password" placeholder="Password" type="password" required>
+	<button>Log In</button>
+	<small>If you do not have credentials or have forgotten your username or password, please contact a system administrator.</small>
 </form>
 {% endblock %}

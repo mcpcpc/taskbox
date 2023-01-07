@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
-{% block h1 %}{% block title %}Register{% endblock %}{% endblock %}
+{% block title %}Register{% endblock %}
 {% block main %}
-<form method="post">
-    <input name="username" placeholder="Username" required>
-    <input name="password" placeholder="Password" type="password" required>
-    <button>Register</button>
+<h2>Register User</h2>
+<form method="post" class="twocol">
+	<label for="username">User Name</label>
+	<input name="username" type="text" required>
+	<label for="password">Password</label>
+	<input name="password" type="password" required>
+	<button>Register</button>
 </form>
 {% endblock %}
