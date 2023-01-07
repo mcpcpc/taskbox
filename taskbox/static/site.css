@@ -7,8 +7,11 @@
 	--color-background: #FFFFFF;
 }
 
-body {
+* {
 	font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
 	background-color: var(--color-background);
 	color: var(--color-foreground);
 }
@@ -21,9 +24,8 @@ th, td {
 }
 td a {
 	background-color: var(--color-secondary);
-	text-decoration: none;
-	text-transform: capitalize;
 	color: var(--color-background);
+	text-transform: capitalize;
 	padding: 0.6em;
 	margin: 0.4em;
 	cursor: pointer;
@@ -41,7 +43,7 @@ form {
 	grid-gap: 2em;
 }
 
-input {
+input, button {
 	border-radius: 5px;
 	font-size: 1.2em;
 	padding: 0.4em;	
@@ -50,9 +52,6 @@ input {
 button {
 	background-color: var(--color-secondary);
 	color: var(--color-background);
-	padding: 0.4em;
-	font-size: 1.2em;
-	border-radius: 5px;
 }
 
 header {
@@ -81,7 +80,7 @@ header img {
 	margin-right: 20px;
 }
 
-header a {text-decoration: none} 
+a {text-decoration: none} 
 
 main {
 	margin: 90px auto; 
