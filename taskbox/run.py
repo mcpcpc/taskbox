@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import run
+from subprocess import run as subprocess_run
 from subprocess import PIPE
 
 from flask import Blueprint
@@ -26,6 +26,6 @@ def index():
 def run_task(id: int):
     task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
     command = task["command"]
-    result = run(command.split(","), stdout=PIPE)
+    result = subprocess_run(command.split(","), stdout=PIPE)
     flash(result.stdout.decode())
     return redirect(url_for("index"))
