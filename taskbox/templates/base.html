@@ -13,7 +13,7 @@
 		<header>
 			<a href="/"><h1>TaskBOX</h1></a>
 			<ul>
-				<li><a href="{{ url_for('runner.index') }}">Run</a></li>
+				<li><a href="{{ url_for('index') }}">Run</a></li>
 			</ul>
 			{% if session['user_id'] %}
 			<a href="{{ url_for('auth.logout') }}"><button>Log Out</button></a>

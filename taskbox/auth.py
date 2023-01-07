@@ -89,7 +89,7 @@ def login():
         if error is None:
             session.clear()
             session["user_id"] = user["id"]
-            return redirect(url_for("runner.index"))
+            return redirect(url_for("index"))
         flash(error)
     return render_template("login.html")
 
@@ -98,4 +98,4 @@ def login():
 def logout():
     """Clear the current session, including the stored user id."""
     session.clear()
-    return redirect(url_for("runner.index"))
+    return redirect(url_for("index"))

@@ -9,13 +9,11 @@ from flask import Flask
 from taskbox.auth import auth
 from taskbox.db import init_app
 from taskbox.devices import devices
-from taskbox.runner import runner
+from taskbox.run import run
 from taskbox.tasks import tasks
 
 
-def create_app(
-    test_config=None,
-):
+def create_app(test_config=None):
     """Create and configure an instance of the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -33,6 +31,7 @@ def create_app(
     init_app(app)
     app.register_blueprint(auth)
     app.register_blueprint(devices)
-    app.register_blueprint(runner)
+    app.register_blueprint(run)
     app.register_blueprint(tasks)
+    app.add_url_rule("/", endpoint="index")
     return app
