@@ -45,6 +45,15 @@ header {
 	border-bottom: 1px solid var(--color-secondary);
 }
 
+header ul {list-style: none}
+
+header ul li {
+	display: inline-block;
+	padding: 0 0.5rem;
+}
+
+header ul li a {transition: all 0.3s ease 0s}
+
 h1 {
 	font-size: 1em;
 	text-transform: uppercase;
@@ -62,15 +71,6 @@ li, a, button {
 	font-weight: 500;
 	text-decoration: none;
 }
-
-header ul {list-style: none}
-
-header ul li {
-	display: inline-block;
-	padding: 0 0.5rem;
-}
-
-header ul li a {transition: all 0.3s ease 0s}
 
 form {
 	max-width:450px;
