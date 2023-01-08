@@ -42,6 +42,7 @@ header {
 	align-items: center;
 	text-decoration: none;
 	padding: 30px 10%;
+	border-bottom: 1px solid var(--color-secondary);
 }
 
 h1 {
@@ -59,7 +60,6 @@ h2 {
 
 li, a, button {
 	font-weight: 500;
-	font-size: 1em;
 	text-decoration: none;
 }
 
@@ -67,22 +67,21 @@ header ul {list-style: none}
 
 header ul li {
 	display: inline-block;
-	padding: 0 0.5em;
+	padding: 0 0.5rem;
 }
 
 header ul li a {transition: all 0.3s ease 0s}
 
 form {
-	max-width:500px;
+	max-width:450px;
 	display: grid;
 	align-items: center;
-	grid-gap: 2em;
+	grid-gap: calc(1rem * 1);
 }
 
 input, button {
 	border: 1px solid var(--color-foreground);
-	font-size: 1.2em;
-	border-radius: calc(1.2rem * 0.3);
+	border-radius: calc(1rem * 0.3);
 	padding: 0.5rem;	
 }
 
