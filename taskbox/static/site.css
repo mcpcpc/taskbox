@@ -68,9 +68,12 @@ h2 {
 }
 
 li, a, button {
+	font-size: 1em;
 	font-weight: 500;
 	text-decoration: none;
 }
+
+section {margin-top: 2.5em}
 
 form {
 	max-width:450px;
