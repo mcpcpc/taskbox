@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from subprocess import run
+from subprocess import run as subprocess_run
 from subprocess import PIPE
 
 from flask import Blueprint
@@ -13,19 +13,19 @@ from flask import url_for
 
 from taskbox.db import get_db
 
-runner = Blueprint("runner", __name__)
+run = Blueprint("run", __name__)
 
 
-@runner.get("/")
+@run.get("/")
 def index():
     tasks_v = get_db().execute("select * from tasks_v").fetchall()
-    return render_template("index.html", tasks_v=tasks_v)
+    return render_template("run.html", tasks_v=tasks_v)
 
 
-@runner.get("/run/<int:id>")
+@run.get("/run/<int:id>")
 def run_task(id: int):
     task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
     command = task["command"]
-    result = run(command.split(","), stdout=PIPE)
+    result = subprocess_run(command.split(","), stdout=PIPE)
     flash(result.stdout.decode())
-    return redirect(url_for("runner.index"))
+    return redirect(url_for("index"))

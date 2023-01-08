@@ -1,26 +1,34 @@
 <!DOCTYPE html>
 <html lang="en-us">
-    <head>
-	<title>{% block title %}{% endblock %} - TaskBOX</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="A simple UX for TaskBox API interfacing.">
-        <meta name="author" content="Michael Czigler">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon.ico') }}" />
-        <link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}" />
-    </head>
-    <body>
-        <header>
-            <a href="/">
-              <img src="{{ url_for('static', filename='taskbox.png') }}" height="26px" />
-            </a>
-	    <h1>TaskBox | <strong>UX</strong></h1>
-        </header>
-        <main>
-            {% block main %}{% endblock %}
-	    {% for message in get_flashed_messages() %}
-	        <div class="flash">{{ message }}</div>
-            {% endfor %}
-        </main>
-    </body>
+	<head>
+		<title>{% block title %}{% endblock %} - TaskBOX</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="A simple UX for TaskBox API interfacing.">
+		<meta name="author" content="Michael Czigler">
+		<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon.ico') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='site.css') }}" />
+	</head>
+	<body>
+		<header>
+			<a href="/"><h1>TaskBOX</h1></a>
+			<ul>
+				<li><a href="{{ url_for('index') }}">Run</a></li>
+			{% if session['user_id'] %}
+				<li><a href="{{ url_for('index') }}">Admin</a></li>
+			{% endif %}
+			</ul>
+			{% if session['user_id'] %}
+			<a href="{{ url_for('auth.logout') }}"><button>Log Out</button></a>
+			{% else %}
+			<a href="{{ url_for('auth.login') }}"><button>Log In</button></a>
+			{% endif %}
+		</header>
+		<main>
+			{% block main %}{% endblock %}
+			{% for message in get_flashed_messages() %}
+			<div class="flash">{{ message }}</div>
+			{% endfor %}
+		</main>
+	</body>
 </html>
