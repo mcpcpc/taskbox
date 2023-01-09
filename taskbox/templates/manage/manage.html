@@ -4,14 +4,14 @@
 
 <h2>Management Panel</h2>
 <section>
-	<h3>Device List [<a href="{{ url_for('manage.create_device') }}">+</a>]</h3>
+	<h3>Devices [<a href="{{ url_for('manage.create_device') }}">add</a>]</h3>
 	<table>
 		<thead>
 			<tr>
 				<th>ID</th>
 				<th>Name</th>
 				<th>Description</th>
-				<th></th>
+				<th colspan="2"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -20,14 +20,15 @@
 				<td>{{ device.id }}</td>
 				<td>{{ device.name }}</td>
 				<td>{{ device.description }}</td>
-				<td><a href="{{ url_for('manage.delete_device', id=device['id']) }}">x</a></td>
+				<td><a href="{{ url_for('manage.delete_device', id=device['id']) }}">delete</a></td>
+				<td><a href="{{ url_for('manage.update_device', id=device['id']) }}">update</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 </section>
 <section>
-	<h3>Task List [<a href="{{ url_for('manage.create_task') }}">+</a>]</h3>
+	<h3>Tasks [<a href="{{ url_for('manage.create_task') }}">add</a>]</h3>
 	<table>
 		<thead>
 			<tr>
@@ -35,7 +36,7 @@
 				<th>Device ID</th>
 				<th>Name</th>
 				<th>Command</th>
-				<th></th>
+				<th colspan="2"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -45,7 +46,8 @@
 				<td>{{ task.device_id }}</td>
 				<td>{{ task.name }}</td>
 				<td>{{ task.command }}</td>
-				<td><a href="{{ url_for('manage.delete_task', id=task['id']) }}">x</a></td>
+				<td><a href="{{ url_for('manage.delete_task', id=task['id']) }}">delete</a></td>
+				<td><a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>

@@ -31,9 +31,7 @@ p {
 }
 
 main {
-	margin: 90px auto; 
-	padding:20px;
-	max-width:900px;
+	margin: 90px 10%; 
 }
 
 header {
@@ -61,10 +59,13 @@ h1 {
 	color: var(--color-secondary);
 }
 
-h2 {
-	font-size: 2em;
+h2, h3 {
 	margin-bottom: 1em;
 	color: var(--color-secondary);
+}
+
+h2 {
+	font-size: 2em;
 }
 
 li, a, button {

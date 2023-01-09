@@ -14,14 +14,15 @@ CREATE TABLE devices (
 
 CREATE TABLE users (
 	id INTEGER PRIMARY KEY,
+	role TEXT,
 	username TEXT NOT NULL UNIQUE,
 	password TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE tasks (
 	id INTEGER PRIMARY KEY,
-	name TEXT NOT NULL UNIQUE,
-	command TEXT NOT NULL UNIQUE,
+	name TEXT NOT NULL,
+	command TEXT NOT NULL,
 	device_id INTEGER NOT NULL,
 	FOREIGN KEY(device_id) REFERENCES devices(id)
 );
