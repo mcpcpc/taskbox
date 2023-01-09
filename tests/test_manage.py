@@ -82,6 +82,19 @@ class ManageTestCase(TestCase):
         )
         self.assertEqual(response.headers["location"], "/manage/")
 
+    def test_update_task(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        response = self.client.post(
+            "/manage/tasks/1/update",
+            data={"name": "name2_", "device_id": 1, "command": "command2_"},
+        )
+        self.assertEqual(response.headers["location"], "/manage/")
+        
     def test_delete_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
