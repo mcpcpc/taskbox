@@ -80,7 +80,7 @@ def delete(id: int):
     db.execute("DELETE FROM users WHERE id = ?", (id,))
     db.commit()
     flash("User deleted successfully")
-    return redirect(url_for("index"))
+    return redirect(url_for("manage.index"))
 
 @auth.route("/auth/<int:id>/update", methods=("GET", "POST"))
 @login_required
