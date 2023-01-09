@@ -75,7 +75,7 @@
 				<td>{{ task.id }}</td>
 				<td>{{ task.device_id }}</td>
 				<td>{{ task.name }}</td>
-				<td>{{ task.command }}</td>
+				<td class="cmd">{{ task.command }}</td>
 				<td>
 					<a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a>
 					<a href="{{ url_for('manage.delete_task', id=task['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
