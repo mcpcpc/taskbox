@@ -11,7 +11,7 @@
 				<th>ID</th>
 				<th>Username</th>
 				<th>Role</th>
-				<th colspan="1"></th>
+				<th colspan="2"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -21,6 +21,11 @@
 				<td>{{ user.username }}</td>
 				<td>{{ user.role }}</td>
 				<td><a href="{{ url_for('auth.update', id=user['id']) }}">change password</a></td>
+				{% if user.role != "admin" %}
+				<td><a href="{{ url_for('auth.delete', id=user['id']) }}">delete</a></td>
+				(% else %)
+				<td></td>
+				{% endif %}
 			</tr>
 			{% endfor %}
 		</tbody>
