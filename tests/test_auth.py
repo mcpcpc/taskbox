@@ -65,6 +65,39 @@ class AuthTestCase(TestCase):
                 )
                 self.assertIn(message, response.data)
 
+    def test_update_get(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
+        response = self.client.get("/auth/2/update")
+        self.assertEqual(response.status_code, 200)
+
+    def test_update_post(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
+        response = self.client.post(
+            "/auth/2/update", data={"password": "pass1_"}
+        )
+        self.assertEqual(response.headers["location"], "/auth/login")
+
+    def test_update_flash(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
+        parameters = [
+            ("", b"Password is required."),
+        ]
+        for parameter in parameters:
+            with self.subTest(parameter=parameter):
+                username, password, message = parameter
+                response = self.client.post(
+                    "/auth/2/update",
+                    data={"password": password},
+                    follow_redirects=True,
+                )
+                self.assertIn(message, response.data)
+
     def test_delete(self):
         db = connect(self.db)
         db.executescript(self._preload)
