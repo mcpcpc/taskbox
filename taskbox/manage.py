@@ -20,9 +20,7 @@ def index():
     devices = get_db().execute("select * from devices").fetchall()
     tasks = get_db().execute("select * from tasks").fetchall()
     users = get_db().execute("select * from users").fetchall()
-    return render_template(
-        "manage/manage.html", devices=devices, tasks=tasks, users=users
-    )
+    return render_template("manage/manage.html", devices=devices, tasks=tasks, users=users)
 
 
 @manage.route("/tasks/create", methods=("GET", "POST"))
@@ -35,7 +33,6 @@ def create_task():
             request.form,
         )
         db.commit()
-        flash("Task created successfully")
         return redirect(url_for("manage.index"))
     return render_template("manage/create_task.html")
 
@@ -51,7 +48,6 @@ def update_task(id: int):
             request.form,
         )
         db.commit()
-        flash("Device updated successfully")
         return redirect(url_for("manage.index"))
     return render_template("manage/update_task.html", device=device)
 
@@ -62,7 +58,6 @@ def delete_task(id: int):
     db = get_db()
     db.execute("DELETE FROM tasks WHERE id = ?", (id,))
     db.commit()
-    flash("Task deleted successfully")
     return redirect(url_for("manage.index"))
 
 
@@ -96,7 +91,6 @@ def update_device(id: int):
             request.form,
         )
         db.commit()
-        flash("Device updated successfully")
         return redirect(url_for("manage.index"))
     return render_template("manage/update_device.html", device=device)
 
@@ -107,5 +101,4 @@ def delete_device(id: int):
     db = get_db()
     db.execute("DELETE FROM devices WHERE id = ?", (id,))
     db.commit()
-    flash("Device deleted successfully")
     return redirect(url_for("manage.index"))
