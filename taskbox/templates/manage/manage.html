@@ -23,7 +23,7 @@
 				<td><a href="{{ url_for('auth.update', id=user['id']) }}">change password</a></td>
 				{% if user.role != "admin" %}
 				<td><a href="{{ url_for('auth.delete', id=user['id']) }}">delete</a></td>
-				(% else %)
+				{% else %}
 				<td></td>
 				{% endif %}
 			</tr>
