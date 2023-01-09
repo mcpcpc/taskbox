@@ -80,11 +80,8 @@ def update(id: int):
     db = get_db()
     user = get_db().execute("SELECT * FROM users WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
-        id = request.form["id"]
         password = request.form["password"]
         error = None
-        if not id:
-            error = "ID is required."
         if not password:
             error = "Password is required."
         if error is None:
