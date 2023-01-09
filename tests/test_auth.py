@@ -90,7 +90,7 @@ class AuthTestCase(TestCase):
         ]
         for parameter in parameters:
             with self.subTest(parameter=parameter):
-                username, password, message = parameter
+                password, message = parameter
                 response = self.client.post(
                     "/auth/2/update",
                     data={"password": password},
