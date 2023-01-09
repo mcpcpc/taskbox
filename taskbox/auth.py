@@ -69,7 +69,7 @@ def register():
                 error = f"User {username} is already registered."
             else:
                 return redirect(url_for("auth.login"))
-        flash(error)
+        flash(error, "error")
     return render_template("auth/register.html")
 
 
@@ -103,7 +103,7 @@ def update(id: int):
             )
             db.commit()
             return redirect(url_for("auth.login"))
-        flash(error)
+        flash(error, "error")
     return render_template("auth/update.html", user=user)
 
 
@@ -115,9 +115,7 @@ def login():
         password = request.form["password"]
         db = get_db()
         error = None
-        user = db.execute(
-            "SELECT * FROM users WHERE username = ?", (username,)
-        ).fetchone()
+        user = db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
         if user is None:
             error = "Incorrect username or password."
         elif not check_password_hash(user["password"], password):
@@ -126,7 +124,7 @@ def login():
             session.clear()
             session["user_id"] = user["id"]
             return redirect(url_for("index"))
-        flash(error)
+        flash(error, "error")
     return render_template("auth/login.html")
 
 
