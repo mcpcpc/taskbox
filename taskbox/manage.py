@@ -88,9 +88,11 @@ def update_device(id: int):
     db = get_db()
     device = db.execute("SELECT * FROM devices WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
+        name = request.form["name"]
+        description = request.form["description"]
         db.execute(
-            "UPDATE devices SET name = :name, description = :description WHERE id = :id",
-            request.form,
+            "UPDATE devices SET name = ?, description = ? WHERE id = ?",
+            (name, description, id),
         )
         db.commit()
         return redirect(url_for("manage.index"))
