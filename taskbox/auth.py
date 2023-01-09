@@ -90,7 +90,10 @@ def update(id: int):
                 (generate_password_hash(password), id),
             )
             db.commit()
-            return redirect(url_for("auth.login"))
+            if session.get("user_id") == id:
+                session.clear()
+                return redirect(url_for("auth.login"))
+            return redirect(url_for("manage.index"))
         flash(error, "error")
     return render_template("auth/update.html", user=user)
 
@@ -101,6 +104,8 @@ def delete(id: int):
     db = get_db()
     db.execute("DELETE FROM users WHERE id = ?", (id,))
     db.commit()
+    if session.get("user_id") == id:
+        session.clear()
     return redirect(url_for("manage.index"))
 
 
