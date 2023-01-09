@@ -23,7 +23,7 @@
 				<td>
 					<a href="{{ url_for('auth.update', id=user['id']) }}">update</a>
 					{% if user.role != "admin" %}
-					<a href="{{ url_for('auth.delete', id=user['id']) }}">delete</a>
+					<a href="{{ url_for('auth.delete', id=user['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
 					{% endif %}
 				</td>
 			</tr>
@@ -49,8 +49,8 @@
 				<td>{{ device.name }}</td>
 				<td>{{ device.description }}</td>
 				<td>
-					<a href="{{ url_for('manage.delete_device', id=device['id']) }}">delete</a>
 					<a href="{{ url_for('manage.update_device', id=device['id']) }}">update</a>
+					<a href="{{ url_for('manage.delete_device', id=device['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
 				</td>
 			</tr>
 			{% endfor %}
@@ -77,8 +77,8 @@
 				<td>{{ task.name }}</td>
 				<td>{{ task.command }}</td>
 				<td>
-					<a href="{{ url_for('manage.delete_task', id=task['id']) }}">delete</a>
 					<a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a>
+					<a href="{{ url_for('manage.delete_task', id=task['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
 				</td>
 			</tr>
 			{% endfor %}
