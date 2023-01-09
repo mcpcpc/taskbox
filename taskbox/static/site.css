@@ -125,6 +125,10 @@ button {
 	animation-fill-mode: forwards;
 }
 
+.error {
+	background-color: var(--color-primary-light);
+}
+
 @keyframes hideAnimation {
 	to {
 		visibility: hidden;
