@@ -43,9 +43,12 @@ def update_task(id: int):
     db = get_db()
     device = db.execute("SELECT * FROM tasks WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
+        name = request.form["name"]
+        command = request.form["command"]
+        device_id = request.form["device_id"]
         db.execute(
-            "UPDATE tasks SET device_id = :device_id, name = :name, command = :command WHERE id = :id",
-            request.form,
+            "UPDATE tasks SET device_id = ?, name = ?, command = ? WHERE id = ?",
+            (device_id, name, command, id),
         )
         db.commit()
         return redirect(url_for("manage.index"))
