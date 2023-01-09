@@ -20,7 +20,7 @@
 				<td>{{ user.id }}</td>
 				<td>{{ user.username }}</td>
 				<td>{{ user.role }}</td>
-				<td><a href="{{ url_for('manage.change', id=device['id']) }}">change</a></td>
+				<td><a href="{{ url_for('auth.update', id=user['id']) }}">change password</a></td>
 			</tr>
 			{% endfor %}
 		</tbody>
