@@ -11,7 +11,7 @@
 				<th>ID</th>
 				<th>Username</th>
 				<th>Role</th>
-				<th colspan="2"></th>
+				<th style="width:10%"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -20,12 +20,12 @@
 				<td>{{ user.id }}</td>
 				<td>{{ user.username }}</td>
 				<td>{{ user.role }}</td>
-				<td><a href="{{ url_for('auth.update', id=user['id']) }}">change password</a></td>
-				{% if user.role != "admin" %}
-				<td><a href="{{ url_for('auth.delete', id=user['id']) }}">delete</a></td>
-				{% else %}
-				<td></td>
-				{% endif %}
+				<td>
+					<a href="{{ url_for('auth.update', id=user['id']) }}">update</a>
+					{% if user.role != "admin" %}
+					<a href="{{ url_for('auth.delete', id=user['id']) }}">delete</a>
+					{% endif %}
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
@@ -39,7 +39,7 @@
 				<th>ID</th>
 				<th>Name</th>
 				<th>Description</th>
-				<th colspan="2"></th>
+				<th style="width:10%"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -48,8 +48,10 @@
 				<td>{{ device.id }}</td>
 				<td>{{ device.name }}</td>
 				<td>{{ device.description }}</td>
-				<td><a href="{{ url_for('manage.delete_device', id=device['id']) }}">delete</a></td>
-				<td><a href="{{ url_for('manage.update_device', id=device['id']) }}">update</a></td>
+				<td>
+					<a href="{{ url_for('manage.delete_device', id=device['id']) }}">delete</a>
+					<a href="{{ url_for('manage.update_device', id=device['id']) }}">update</a>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
@@ -64,7 +66,7 @@
 				<th>Device ID</th>
 				<th>Name</th>
 				<th>Command</th>
-				<th colspan="2"></th>
+				<th style="width:10%"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -74,8 +76,10 @@
 				<td>{{ task.device_id }}</td>
 				<td>{{ task.name }}</td>
 				<td>{{ task.command }}</td>
-				<td><a href="{{ url_for('manage.delete_task', id=task['id']) }}">delete</a></td>
-				<td><a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a></td>
+				<td>
+					<a href="{{ url_for('manage.delete_task', id=task['id']) }}">delete</a>
+					<a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
