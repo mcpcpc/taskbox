@@ -42,7 +42,7 @@ The Sqlite3 database can be initialized or re-initialized with the
 following command.
 
 ```shell
-flask —app taskbox init-db
+flask --app taskbox init-db
 ```
 
 ## Deployment
@@ -51,7 +51,7 @@ Production WSGI via waitress.
 
 ```shell
 pip install waitress
-waitress-serve —call taskbox:create_app
+waitress-serve --call taskbox:create_app
 ```
 
 ## Test
