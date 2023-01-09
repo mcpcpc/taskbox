@@ -69,7 +69,7 @@ def register():
             else:
                 return redirect(url_for("auth.login"))
         flash(error)
-    return render_template("register.html")
+    return render_template("auth/register.html")
 
 
 @auth.route("/auth/login", methods=("GET", "POST"))
@@ -92,7 +92,7 @@ def login():
             session["user_id"] = user["id"]
             return redirect(url_for("index"))
         flash(error)
-    return render_template("login.html")
+    return render_template("auth/login.html")
 
 
 @auth.route("/auth/logout")
