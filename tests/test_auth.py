@@ -31,10 +31,16 @@ class AuthTestCase(TestCase):
         self.ctx.pop()
 
     def test_register_get(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
         response = self.client.get("/auth/register")
         self.assertEqual(response.status_code, 200)
 
     def test_register_post(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
         response = self.client.post(
             "/auth/register", data={"username": "user1", "password": "pass1"}
         )
@@ -43,6 +49,7 @@ class AuthTestCase(TestCase):
     def test_register_flash(self):
         db = connect(self.db)
         db.executescript(self._preload)
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
         parameters = [
             ("", "", b"Username is required."),
             ("user1", "", b"Password is required."),
