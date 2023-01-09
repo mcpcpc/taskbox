@@ -73,6 +73,15 @@ def register():
     return render_template("auth/register.html")
 
 
+@auth.route("/auth/<int:id>/delete", methods=("GET",))
+@login_required
+def delete(id: int):
+    db = get_db()
+    db.execute("DELETE FROM users WHERE id = ?", (id,))
+    db.commit()
+    flash("User deleted successfully")
+    return redirect(url_for("index"))
+
 @auth.route("/auth/<int:id>/update", methods=("GET", "POST"))
 @login_required
 def update(id: int):
