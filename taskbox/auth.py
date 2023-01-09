@@ -73,6 +73,31 @@ def register():
     return render_template("auth/register.html")
 
 
+@auth.route("/auth/<int:id>/update", methods=("GET", "POST"))
+@login_required
+def update(id: int):
+    """Update an existing users password."""
+    db = get_db()
+    user = get_db().execute("SELECT * FROM users WHERE id = ?", (id,)).fetchone()
+    if request.method == "POST":
+        id = request.form["id"]
+        password = request.form["password"]
+        error = None
+        if not id:
+            error = "ID is required."
+        if not password:
+            error = "Password is required."
+        if error is None:
+            db.execute(
+                "UPDATE users SET password = ? WHERE id = ?",
+                (generate_password_hash(password), id),
+            )
+            db.commit()
+            return redirect(url_for("auth.login"))
+        flash(error, "error")
+    return render_template("auth/update.html", user=user)
+
+
 @auth.route("/auth/<int:id>/delete", methods=("GET",))
 @login_required
 def delete(id: int):
