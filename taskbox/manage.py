@@ -19,7 +19,10 @@ manage = Blueprint("manage", __name__, url_prefix="/manage")
 def index():
     devices = get_db().execute("select * from devices").fetchall()
     tasks = get_db().execute("select * from tasks").fetchall()
-    return render_template("manage/manage.html", devices=devices, tasks=tasks)
+    users = get_db().execute("select * from users").fetchall()
+    return render_template(
+        "manage/manage.html", devices=devices, tasks=tasks, users=users
+    )
 
 
 @manage.route("/tasks/create", methods=("GET", "POST"))
@@ -32,7 +35,6 @@ def create_task():
             request.form,
         )
         db.commit()
-        flash("Task created successfully")
         return redirect(url_for("manage.index"))
     return render_template("manage/create_task.html")
 
@@ -43,12 +45,14 @@ def update_task(id: int):
     db = get_db()
     device = db.execute("SELECT * FROM tasks WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
+        name = request.form["name"]
+        command = request.form["command"]
+        device_id = request.form["device_id"]
         db.execute(
-            "UPDATE tasks SET device_id = :device_id, name = :name, command = :command WHERE id = :id",
-            request.form,
+            "UPDATE tasks SET device_id = ?, name = ?, command = ? WHERE id = ?",
+            (device_id, name, command, id),
         )
         db.commit()
-        flash("Device updated successfully")
         return redirect(url_for("manage.index"))
     return render_template("manage/update_task.html", device=device)
 
@@ -59,7 +63,6 @@ def delete_task(id: int):
     db = get_db()
     db.execute("DELETE FROM tasks WHERE id = ?", (id,))
     db.commit()
-    flash("Task deleted successfully")
     return redirect(url_for("manage.index"))
 
 
@@ -75,9 +78,8 @@ def create_device():
             )
             db.commit()
         except db.IntegrityError:
-            flash("Device already exists")
+            flash("Device already exists", "error")
             return redirect(url_for("manage.create_device"))
-        flash("Device created successfully")
         return redirect(url_for("manage.index"))
     return render_template("manage/create_device.html")
 
@@ -88,12 +90,13 @@ def update_device(id: int):
     db = get_db()
     device = db.execute("SELECT * FROM devices WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
+        name = request.form["name"]
+        description = request.form["description"]
         db.execute(
-            "UPDATE devices SET name = :name, description = :description WHERE id = :id",
-            request.form,
+            "UPDATE devices SET name = ?, description = ? WHERE id = ?",
+            (name, description, id),
         )
         db.commit()
-        flash("Device updated successfully")
         return redirect(url_for("manage.index"))
     return render_template("manage/update_device.html", device=device)
 
@@ -104,5 +107,4 @@ def delete_device(id: int):
     db = get_db()
     db.execute("DELETE FROM devices WHERE id = ?", (id,))
     db.commit()
-    flash("Device deleted successfully")
     return redirect(url_for("manage.index"))

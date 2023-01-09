@@ -4,14 +4,42 @@
 
 <h2>Management Panel</h2>
 <section>
-	<h3>Devices [<a href="{{ url_for('manage.create_device') }}">add</a>]</h3>
+	<h3>Users (<a href="{{ url_for('auth.register') }}">add</a>)</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Username</th>
+				<th>Role</th>
+				<th style="width:10%"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+			<tr>
+				<td>{{ user.id }}</td>
+				<td>{{ user.username }}</td>
+				<td>{{ user.role }}</td>
+				<td>
+					<a href="{{ url_for('auth.update', id=user['id']) }}">update</a>
+					{% if user.role != "administrator" %}
+					<a href="{{ url_for('auth.delete', id=user['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</section>
+<section>
+	<h3>Devices (<a href="{{ url_for('manage.create_device') }}">add</a>)</h3>
 	<table>
 		<thead>
 			<tr>
 				<th>ID</th>
 				<th>Name</th>
 				<th>Description</th>
-				<th colspan="2"></th>
+				<th style="width:10%"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -20,15 +48,17 @@
 				<td>{{ device.id }}</td>
 				<td>{{ device.name }}</td>
 				<td>{{ device.description }}</td>
-				<td><a href="{{ url_for('manage.delete_device', id=device['id']) }}">delete</a></td>
-				<td><a href="{{ url_for('manage.update_device', id=device['id']) }}">update</a></td>
+				<td>
+					<a href="{{ url_for('manage.update_device', id=device['id']) }}">update</a>
+					<a href="{{ url_for('manage.delete_device', id=device['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
 	</table>
 </section>
 <section>
-	<h3>Tasks [<a href="{{ url_for('manage.create_task') }}">add</a>]</h3>
+	<h3>Tasks (<a href="{{ url_for('manage.create_task') }}">add</a>)</h3>
 	<table>
 		<thead>
 			<tr>
@@ -36,7 +66,7 @@
 				<th>Device ID</th>
 				<th>Name</th>
 				<th>Command</th>
-				<th colspan="2"></th>
+				<th style="width:10%"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -45,9 +75,11 @@
 				<td>{{ task.id }}</td>
 				<td>{{ task.device_id }}</td>
 				<td>{{ task.name }}</td>
-				<td>{{ task.command }}</td>
-				<td><a href="{{ url_for('manage.delete_task', id=task['id']) }}">delete</a></td>
-				<td><a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a></td>
+				<td class="cmd">{{ task.command }}</td>
+				<td>
+					<a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a>
+					<a href="{{ url_for('manage.delete_task', id=task['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>

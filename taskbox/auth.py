@@ -42,6 +42,7 @@ def load_logged_in_user():
 
 
 @auth.route("/auth/register", methods=("GET", "POST"))
+@login_required
 def register():
     """Register a new user.
 
@@ -68,8 +69,39 @@ def register():
                 error = f"User {username} is already registered."
             else:
                 return redirect(url_for("auth.login"))
-        flash(error)
-    return render_template("register.html")
+        flash(error, "error")
+    return render_template("auth/register.html")
+
+
+@auth.route("/auth/<int:id>/update", methods=("GET", "POST"))
+@login_required
+def update(id: int):
+    """Update an existing users password."""
+    db = get_db()
+    user = get_db().execute("SELECT * FROM users WHERE id = ?", (id,)).fetchone()
+    if request.method == "POST":
+        password = request.form["password"]
+        error = None
+        if not password:
+            error = "Password is required."
+        if error is None:
+            db.execute(
+                "UPDATE users SET password = ? WHERE id = ?",
+                (generate_password_hash(password), id),
+            )
+            db.commit()
+            return redirect(url_for("auth.login"))
+        flash(error, "error")
+    return render_template("auth/update.html", user=user)
+
+
+@auth.route("/auth/<int:id>/delete", methods=("GET",))
+@login_required
+def delete(id: int):
+    db = get_db()
+    db.execute("DELETE FROM users WHERE id = ?", (id,))
+    db.commit()
+    return redirect(url_for("manage.index"))
 
 
 @auth.route("/auth/login", methods=("GET", "POST"))
@@ -91,8 +123,8 @@ def login():
             session.clear()
             session["user_id"] = user["id"]
             return redirect(url_for("index"))
-        flash(error)
-    return render_template("login.html")
+        flash(error, "error")
+    return render_template("auth/login.html")
 
 
 @auth.route("/auth/logout")

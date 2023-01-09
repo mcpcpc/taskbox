@@ -20,10 +20,19 @@ table {width: 100%}
 th, td {
 	text-align: left;
 	border-bottom: 1px solid #ddd;
-	padding: 0.5em;
 }
 
-table td a {text-decoration: underline}
+table td a {
+	display: block;
+	padding: 0.5em;
+	color: var(--color-primary);
+}
+
+table td a:before {
+	content: "\00BB";
+	margin-right: 6px;
+	color: var(--color-foreground);
+}
 
 p {
 	line-height: 1.75rem;
@@ -114,6 +123,10 @@ button {
 	background: var(--color-secondary-light);
 	animation: hideAnimation 0s ease-in 3s;
 	animation-fill-mode: forwards;
+}
+
+.error {
+	background-color: var(--color-primary-light);
 }
 
 @keyframes hideAnimation {

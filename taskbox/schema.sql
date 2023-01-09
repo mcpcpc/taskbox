@@ -32,5 +32,6 @@ CREATE VIEW tasks_v AS SELECT
 	devices.description AS device_description,
 	tasks.id as task_id,
 	tasks.name AS task_name
-FROM devices
-INNER JOIN tasks ON tasks.device_id = devices.id;
+FROM devices INNER JOIN tasks ON tasks.device_id = devices.id;
+
+INSERT INTO users (role, username, password) VALUES ('administrator', 'admin', 'pbkdf2:sha256:260000$gtvpYNx6qtTuY8rt$2e2a4172758fee088e20d915ac4fdef3bdb07f792e42ecb2a77aa5a72bedd5f5');
