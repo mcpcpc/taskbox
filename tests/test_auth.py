@@ -65,6 +65,13 @@ class AuthTestCase(TestCase):
                 )
                 self.assertIn(message, response.data)
 
+    def test_delete(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
+        response = self.client.get("/auth/2/delete")
+        self.assertEqual(response.headers["location"], "/manage/")
+
     def test_login_get(self):
         response = self.client.get("/auth/login")
         self.assertEqual(response.status_code, 200)
