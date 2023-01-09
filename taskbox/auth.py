@@ -79,7 +79,6 @@ def delete(id: int):
     db = get_db()
     db.execute("DELETE FROM users WHERE id = ?", (id,))
     db.commit()
-    flash("User deleted successfully")
     return redirect(url_for("manage.index"))
 
 
