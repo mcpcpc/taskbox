@@ -4,7 +4,30 @@
 
 <h2>Management Panel</h2>
 <section>
-	<h3>Devices [<a href="{{ url_for('manage.create_device') }}">add</a>]</h3>
+	<h3>Users (<a href="{{ url_for('auth.register') }}">add</a>)</h3>
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Username</th>
+				<th>Role</th>
+				<th colspan="1"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+			<tr>
+				<td>{{ user.id }}</td>
+				<td>{{ user.username }}</td>
+				<td>{{ user.role }}</td>
+				<td><a href="{{ url_for('manage.change', id=device['id']) }}">change</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</section>
+<section>
+	<h3>Devices (<a href="{{ url_for('manage.create_device') }}">add</a>)</h3>
 	<table>
 		<thead>
 			<tr>
@@ -28,7 +51,7 @@
 	</table>
 </section>
 <section>
-	<h3>Tasks [<a href="{{ url_for('manage.create_task') }}">add</a>]</h3>
+	<h3>Tasks (<a href="{{ url_for('manage.create_task') }}">add</a>)</h3>
 	<table>
 		<thead>
 			<tr>
