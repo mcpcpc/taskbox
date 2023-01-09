@@ -20,7 +20,9 @@ def index():
     devices = get_db().execute("select * from devices").fetchall()
     tasks = get_db().execute("select * from tasks").fetchall()
     users = get_db().execute("select * from users").fetchall()
-    return render_template("manage/manage.html", devices=devices, tasks=tasks, users=users)
+    return render_template(
+        "manage/manage.html", devices=devices, tasks=tasks, users=users
+    )
 
 
 @manage.route("/tasks/create", methods=("GET", "POST"))

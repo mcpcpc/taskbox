@@ -107,7 +107,7 @@ class ManageTestCase(TestCase):
             data={"name": "name2_", "device_id": 1, "command": "command2_"},
         )
         self.assertEqual(response.headers["location"], "/manage/")
-        
+
     def test_delete_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
