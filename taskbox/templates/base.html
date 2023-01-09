@@ -15,7 +15,7 @@
 			<ul>
 				<li><a href="{{ url_for('index') }}">Run</a></li>
 			{% if session['user_id'] %}
-				<li><a href="{{ url_for('index') }}">Admin</a></li>
+				<li><a href="{{ url_for('manage.index') }}">Manage</a></li>
 			{% endif %}
 			</ul>
 			{% if session['user_id'] %}
