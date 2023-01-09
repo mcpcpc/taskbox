@@ -9,7 +9,7 @@ from unittest import TestCase
 from taskbox import create_app
 
 
-class RunnerTestCase(TestCase):
+class RunTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         cls._resources = Path(__file__).parent
