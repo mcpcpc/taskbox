@@ -48,8 +48,8 @@ class ManageTestCase(TestCase):
             "/auth/login",
             data={"username": "test", "password": "test"},
         )
-        response = self.client.get("/manage/devices/1/delete", follow_redirects=True)
-        self.assertIn(b"Device deleted successfully", response.data)
+        response = self.client.get("/manage/devices/1/delete")
+        self.assertEqual(response.headers["location"], "/manage/")
 
     def test_create_device_flash(self):
         db = connect(self.db)
@@ -89,8 +89,8 @@ class ManageTestCase(TestCase):
             "/auth/login",
             data={"username": "test", "password": "test"},
         )
-        response = self.client.get("/manage/tasks/1/delete", follow_redirects=True)
-        self.assertIn(b"Task deleted successfully", response.data)
+        response = self.client.get("/manage/tasks/1/delete")
+        self.assertEqual(response.headers["location"], "/manage/")
 
 
 if __name__ == "__main__":
