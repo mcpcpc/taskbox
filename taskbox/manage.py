@@ -76,7 +76,7 @@ def create_device():
             )
             db.commit()
         except db.IntegrityError:
-            flash("Device already exists")
+            flash("Device already exists", "error")
             return redirect(url_for("manage.create_device"))
         flash("Device created successfully")
         return redirect(url_for("manage.index"))
