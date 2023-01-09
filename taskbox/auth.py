@@ -82,6 +82,7 @@ def delete(id: int):
     flash("User deleted successfully")
     return redirect(url_for("manage.index"))
 
+
 @auth.route("/auth/<int:id>/update", methods=("GET", "POST"))
 @login_required
 def update(id: int):
@@ -99,7 +100,7 @@ def update(id: int):
         if error is None:
             db.execute(
                 "UPDATE users SET password = ? WHERE id = ?",
-                (generate_password_hash(password), id)
+                (generate_password_hash(password), id),
             )
             db.commit()
             return redirect(url_for("auth.login"))
@@ -115,7 +116,9 @@ def login():
         password = request.form["password"]
         db = get_db()
         error = None
-        user = db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+        user = db.execute(
+            "SELECT * FROM users WHERE username = ?", (username,)
+        ).fetchone()
         if user is None:
             error = "Incorrect username or password."
         elif not check_password_hash(user["password"], password):
