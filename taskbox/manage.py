@@ -49,7 +49,7 @@ def create_task():
                 )
                 db.commit()
             except db.IntegrityError:
-                error = "Device ID value does not exist."
+                error = "Device ID does not exist."
             else:
                 return redirect(url_for("manage.index"))
         flash(error)
@@ -81,7 +81,7 @@ def update_task(id: int):
                 )
                 db.commit()
             except db.IntegrityError:
-                error = "Device ID value does not exist."
+                error = "Device ID does not exist."
             else:
                 return redirect(url_for("manage.index"))
         flash(error)

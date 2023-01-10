@@ -95,6 +95,29 @@ class ManageTestCase(TestCase):
         )
         self.assertEqual(response.headers["location"], "/manage/")
 
+    def test_create_task_flash(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        parameters = [
+            ("", "name1", "command1", b"Device ID is required"),
+            ("1", "", "command1", b"Name is required"),
+            ("1", "name1", "", b"Command is required"),
+            ("2", "name1", "command1", b"Device ID does not exist"),
+        ]
+        for parameter in parameters:
+            with self.subTest(parameter=parameter):
+                device_id, name, command, message = parameter
+                response = self.client.post(
+                    "/manage/tasks/create",
+                    data={"device_id": device_id, "name": name, "command": command},
+                    follow_redirects=True,
+                )
+                self.assertIn(message, response.data)
+
     def test_update_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
@@ -107,6 +130,29 @@ class ManageTestCase(TestCase):
             data={"name": "name2_", "device_id": 1, "command": "command2_"},
         )
         self.assertEqual(response.headers["location"], "/manage/")
+
+    def test_update_task_flash(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        parameters = [
+            ("", "name1", "command1", b"Device ID is required"),
+            ("1", "", "command1", b"Name is required"),
+            ("1", "name1", "", b"Command is required"),
+            ("2", "name1", "command1", b"Device ID does not exist"),
+        ]
+        for parameter in parameters:
+            with self.subTest(parameter=parameter):
+                device_id, name, command, message = parameter
+                response = self.client.post(
+                    "/manage/tasks/1/update",
+                    data={"device_id": device_id, "name": name, "command": command},
+                    follow_redirects=True,
+                )
+                self.assertIn(message, response.data)
 
     def test_delete_task(self):
         db = connect(self.db)
