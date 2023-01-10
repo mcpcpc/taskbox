@@ -18,11 +18,20 @@
 				<li><a href="{{ url_for('manage.index') }}">Manage</a></li>
 			{% endif %}
 			</ul>
-			{% if session['user_id'] %}
-			<a href="{{ url_for('auth.logout') }}"><button>Log Out</button></a>
-			{% else %}
-			<a href="{{ url_for('auth.login') }}"><button>Log In</button></a>
-			{% endif %}
+			<ul>
+				<li>
+					{% if session['user_id'] %}
+					<a href="{{ url_for('auth.logout') }}"><button>Log Out</button></a>
+					{% else %}
+					<a href="{{ url_for('auth.login') }}"><button>Log In</button></a>
+					{% endif %}
+				</li>
+				{% if session['user_id'] %}
+				<li>
+					<small>Logged in: {{ g['user']['username'] }}</small>
+				</li>
+				(% endif %)
+			</ul>
 		</header>
 		<main>
 			{% block main %}{% endblock %}
