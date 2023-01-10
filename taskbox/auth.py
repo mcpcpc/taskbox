@@ -49,20 +49,24 @@ def register():
     Validates that the username is not already taken. Hashes the
     password for security.
     """
+    db = get_db()
+    roles = db.execute("SELECT * FROM role").fetchall()
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        role_id = request.form["role_id"]
         error = None
         if not username:
             error = "Username is required."
         elif not password:
             error = "Password is required."
+        elif not role_id:
+             error = "Role ID is required."
         if error is None:
             try:
-                db = get_db()
                 db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    "INSERT INTO user (role_id, username, password) VALUES (?, ?)",
+                    (roll_id, username, generate_password_hash(password)),
                 )
                 db.commit()
             except db.IntegrityError:
