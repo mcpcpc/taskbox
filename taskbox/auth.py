@@ -37,7 +37,7 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = (
-            get_db().execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+            get_db().execute("SELECT * FROM user WHERE id = ?", (user_id,)).fetchone()
         )
 
 
@@ -61,7 +61,7 @@ def register():
             try:
                 db = get_db()
                 db.execute(
-                    "INSERT INTO users (username, password) VALUES (?, ?)",
+                    "INSERT INTO user (username, password) VALUES (?, ?)",
                     (username, generate_password_hash(password)),
                 )
                 db.commit()
@@ -78,7 +78,7 @@ def register():
 def update(id: int):
     """Update an existing users password."""
     db = get_db()
-    user = get_db().execute("SELECT * FROM users WHERE id = ?", (id,)).fetchone()
+    user = get_db().execute("SELECT * FROM user WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
         password = request.form["password"]
         error = None
@@ -86,7 +86,7 @@ def update(id: int):
             error = "Password is required."
         if error is None:
             db.execute(
-                "UPDATE users SET password = ? WHERE id = ?",
+                "UPDATE user SET password = ? WHERE id = ?",
                 (generate_password_hash(password), id),
             )
             db.commit()
@@ -102,7 +102,7 @@ def update(id: int):
 @login_required
 def delete(id: int):
     db = get_db()
-    db.execute("DELETE FROM users WHERE id = ?", (id,))
+    db.execute("DELETE FROM user WHERE id = ?", (id,))
     db.commit()
     if session.get("user_id") == id:
         session.clear()
@@ -118,7 +118,7 @@ def login():
         db = get_db()
         error = None
         user = db.execute(
-            "SELECT * FROM users WHERE username = ?", (username,)
+            "SELECT * FROM user WHERE username = ?", (username,)
         ).fetchone()
         if user is None:
             error = "Incorrect username or password."

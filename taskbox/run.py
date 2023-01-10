@@ -18,13 +18,13 @@ run = Blueprint("run", __name__)
 
 @run.get("/")
 def index():
-    tasks_v = get_db().execute("select * from tasks_v").fetchall()
+    tasks_v = get_db().execute("select * from task _v").fetchall()
     return render_template("run.html", tasks_v=tasks_v)
 
 
 @run.get("/run/<int:id>")
 def run_task(id: int):
-    task = get_db().execute("select * from tasks where id = ?", (id,)).fetchone()
+    task = get_db().execute("select * from task where id = ?", (id,)).fetchone()
     command = task["command"]
     result = subprocess_run(command.split(","), stdout=PIPE)
     flash(result.stdout.decode())
