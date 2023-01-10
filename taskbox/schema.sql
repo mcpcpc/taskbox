@@ -77,4 +77,4 @@ FROM device INNER JOIN task ON task.device_id = device.id;
 
 INSERT INTO permission (title, slug) VALUES ("read", "r"), ("update", "rw"), ("insert", "i"), ("delete", "x");
 INSERT INTO role (title, slug) VALUES ("Administrator", "admin"), ("User", "user"), ("Functional User", "functional"), ("Public", "public");
-INSERT INTO user (role, username, password) VALUES ("administrator", "admin", "pbkdf2:sha256:260000$gtvpYNx6qtTuY8rt$2e2a4172758fee088e20d915ac4fdef3bdb07f792e42ecb2a77aa5a72bedd5f5");
+INSERT INTO user (role_id, username, password) VALUES (1, "admin", "pbkdf2:sha256:260000$gtvpYNx6qtTuY8rt$2e2a4172758fee088e20d915ac4fdef3bdb07f792e42ecb2a77aa5a72bedd5f5");
