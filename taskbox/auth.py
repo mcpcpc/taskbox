@@ -66,7 +66,7 @@ def register():
             try:
                 db.execute(
                     "INSERT INTO user (role_id, username, password) VALUES (?, ?)",
-                    (roll_id, username, generate_password_hash(password)),
+                    (role_id, username, generate_password_hash(password)),
                 )
                 db.commit()
             except db.IntegrityError:
