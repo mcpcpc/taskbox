@@ -42,7 +42,7 @@ def create_task():
         if error is None:
             try:
                 db = get_db()
-                db.execute('PRAGMA foreign_keys = ON')
+                db.execute("PRAGMA foreign_keys = ON")
                 db.execute(
                     "INSERT INTO tasks (name, command, device_id) VALUES (?, ?, ?)",
                     (name, command, device_id),
@@ -52,7 +52,7 @@ def create_task():
                 error = "Device ID does not exist."
             else:
                 return redirect(url_for("manage.index"))
-        flash(error)
+        flash(error, "error")
     return render_template("manage/create_task.html")
 
 
@@ -73,7 +73,7 @@ def update_task(id: int):
         elif not device_id:
             error = "Device ID is required."
         if error is None:
-            db.execute('PRAGMA foreign_keys = ON')
+            db.execute("PRAGMA foreign_keys = ON")
             try:
                 db.execute(
                     "UPDATE tasks SET device_id = ?, name = ?, command = ? WHERE id = ?",
@@ -84,7 +84,7 @@ def update_task(id: int):
                 error = "Device ID does not exist."
             else:
                 return redirect(url_for("manage.index"))
-        flash(error)
+        flash(error, "error")
     return render_template("manage/update_task.html", device=device)
 
 
@@ -103,7 +103,7 @@ def create_device():
     if request.method == "POST":
         db = get_db()
         try:
-            db.execute('PRAGMA foreign_keys = ON')
+            db.execute("PRAGMA foreign_keys = ON")
             db.execute(
                 "INSERT INTO devices (name, description) VALUES (:name, :description)",
                 request.form,
@@ -137,7 +137,7 @@ def update_device(id: int):
 @login_required
 def delete_device(id: int):
     db = get_db()
-    db.execute('PRAGMA foreign_keys = ON')
+    db.execute("PRAGMA foreign_keys = ON")
     db.execute("DELETE FROM devices WHERE id = ?", (id,))
     db.commit()
     return redirect(url_for("manage.index"))
