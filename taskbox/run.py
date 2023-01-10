@@ -18,7 +18,7 @@ run = Blueprint("run", __name__)
 
 @run.get("/")
 def index():
-    tasks_v = get_db().execute("select * from task _v").fetchall()
+    tasks_v = get_db().execute("select * from task_v").fetchall()
     return render_template("run.html", tasks_v=tasks_v)
 
 
