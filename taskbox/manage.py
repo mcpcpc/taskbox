@@ -29,13 +29,30 @@ def index():
 @login_required
 def create_task():
     if request.method == "POST":
-        db = get_db()
-        db.execute(
-            "INSERT INTO tasks (name, command, device_id) VALUES (:name, :command, :device_id)",
-            request.form,
-        )
-        db.commit()
-        return redirect(url_for("manage.index"))
+        error = None
+        device_id = request.form["device_id"]
+        name = request.form["name"]
+        command = request.form["command"]
+        if not name:
+            error = "Name is required."
+        elif not command:
+            error = "Command is required."
+        elif not device_id:
+            error = "Device ID is required."
+        if error is None:
+            try:
+                db = get_db()
+                db.execute('PRAGMA foreign_keys = ON')
+                db.execute(
+                    "INSERT INTO tasks (name, command, device_id) VALUES (?, ?, ?)",
+                    (name, command, device_id),
+                )
+                db.commit()
+            except db.IntegrityError:
+                error = "Device ID value does not exist."
+            else:
+                return redirect(url_for("manage.index"))
+        flash(error)
     return render_template("manage/create_task.html")
 
 
@@ -45,15 +62,29 @@ def update_task(id: int):
     db = get_db()
     device = db.execute("SELECT * FROM tasks WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
+        error = None
+        device_id = request.form["device_id"]
         name = request.form["name"]
         command = request.form["command"]
-        device_id = request.form["device_id"]
-        db.execute(
-            "UPDATE tasks SET device_id = ?, name = ?, command = ? WHERE id = ?",
-            (device_id, name, command, id),
-        )
-        db.commit()
-        return redirect(url_for("manage.index"))
+        if not name:
+            error = "Name is required."
+        elif not command:
+            error = "Command is required."
+        elif not device_id:
+            error = "Device ID is required."
+        if error is None:
+            db.execute('PRAGMA foreign_keys = ON')
+            try:
+                db.execute(
+                    "UPDATE tasks SET device_id = ?, name = ?, command = ? WHERE id = ?",
+                    (device_id, name, command, id),
+                )
+                db.commit()
+            except db.IntegrityError:
+                error = "Device ID value does not exist."
+            else:
+                return redirect(url_for("manage.index"))
+        flash(error)
     return render_template("manage/update_task.html", device=device)
 
 
@@ -72,6 +103,7 @@ def create_device():
     if request.method == "POST":
         db = get_db()
         try:
+            db.execute('PRAGMA foreign_keys = ON')
             db.execute(
                 "INSERT INTO devices (name, description) VALUES (:name, :description)",
                 request.form,
@@ -105,6 +137,7 @@ def update_device(id: int):
 @login_required
 def delete_device(id: int):
     db = get_db()
+    db.execute('PRAGMA foreign_keys = ON')
     db.execute("DELETE FROM devices WHERE id = ?", (id,))
     db.commit()
     return redirect(url_for("manage.index"))
