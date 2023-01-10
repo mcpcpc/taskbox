@@ -58,10 +58,10 @@ class AuthTestCase(TestCase):
         ]
         for parameter in parameters:
             with self.subTest(parameter=parameter):
-                username, password, message = parameter
+                role_id, username, password, message = parameter
                 response = self.client.post(
                     "/auth/register",
-                    data={"username": username, "password": password},
+                    data={"role_id": role_id, "username": username, "password": password},
                     follow_redirects=True,
                 )
                 self.assertIn(message, response.data)
