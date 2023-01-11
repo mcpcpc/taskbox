@@ -31,16 +31,27 @@ def index():
     )
 
 
-@manage.route("/user/<int:id>/token", methods=("GET",))
+@manage.route("/user/<int:id>/token", methods=("GET", "POST"))
 @login_required
 def token(id: int):
-    expires_in = datetime.now(tz=timezone.utc) + timedelta(seconds=600)
-    token = jwt_encode(
-        dict(confirm=id, exp=expires_in),
-        current_app.config["SECRET_KEY"],
-        algorithm="HS256"
-    )
-    return token
+    if request.method == "POST":
+        error = None
+        if not request.form["expires_in"]:
+            error = "Expires In is required."
+        if int(request.form["expires_in"]) > 365:
+            error = "Expires In is too big."
+        if error is None:
+            expires_in = int(request.form["expires_in"])
+            exp = datetime.now(tz=timezone.utc) + timedelta(seconds=expires_in)
+            token = jwt_encode(
+                dict(confirm=id, exp=exp),
+                current_app.config["SECRET_KEY"],
+                algorithm="HS256"
+            )
+            return token
+        flash(error)
+        return redirect(url_for("manage.token", id=id))
+    return render_template("manage/token.html")
 
 
 @manage.route("/tasks/create", methods=("GET", "POST"))
