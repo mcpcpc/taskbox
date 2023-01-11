@@ -3,6 +3,12 @@
 {% block main %}
 <h2>Register User</h2>
 <form method="post" class="twocol">
+	<label for="role_id">Role ID</label>
+	<select name="role_id" required>
+	{% for role in roles %}
+		<option value={{ role.id }}>{{ role.title }}</option>
+	{% endfor %}
+	</select>
 	<label for="username">User Name</label>
 	<input name="username" type="text" required>
 	<label for="password">Password</label>

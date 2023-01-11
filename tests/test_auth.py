@@ -42,7 +42,8 @@ class AuthTestCase(TestCase):
         db.executescript(self._preload)
         self.client.post("/auth/login", data={"username": "test", "password": "test"})
         response = self.client.post(
-            "/auth/register", data={"username": "user1", "password": "pass1"}
+            "/auth/register",
+            data={"role_id": 2, "username": "user1", "password": "pass1"},
         )
         self.assertEqual(response.headers["location"], "/auth/login")
 
@@ -51,16 +52,21 @@ class AuthTestCase(TestCase):
         db.executescript(self._preload)
         self.client.post("/auth/login", data={"username": "test", "password": "test"})
         parameters = [
-            ("", "", b"Username is required."),
-            ("user1", "", b"Password is required."),
-            ("test", "test", b"already registered"),
+            ("", "user1", "pass1", b"Role ID is required."),
+            (2, "", "", b"Username is required."),
+            (2, "user1", "", b"Password is required."),
+            (2, "test", "test", b"already registered"),
         ]
         for parameter in parameters:
             with self.subTest(parameter=parameter):
-                username, password, message = parameter
+                role_id, username, password, message = parameter
                 response = self.client.post(
                     "/auth/register",
-                    data={"username": username, "password": password},
+                    data={
+                        "role_id": role_id,
+                        "username": username,
+                        "password": password,
+                    },
                     follow_redirects=True,
                 )
                 self.assertIn(message, response.data)

@@ -17,11 +17,11 @@ manage = Blueprint("manage", __name__, url_prefix="/manage")
 @manage.get("/")
 @login_required
 def index():
-    devices = get_db().execute("select * from devices").fetchall()
-    tasks = get_db().execute("select * from tasks").fetchall()
-    users = get_db().execute("select * from users").fetchall()
+    devices = get_db().execute("select * from device").fetchall()
+    tasks = get_db().execute("select * from task").fetchall()
+    users_v = get_db().execute("select * from user_v").fetchall()
     return render_template(
-        "manage/manage.html", devices=devices, tasks=tasks, users=users
+        "manage/manage.html", devices=devices, tasks=tasks, users_v=users_v
     )
 
 
@@ -44,7 +44,7 @@ def create_task():
                 db = get_db()
                 db.execute("PRAGMA foreign_keys = ON")
                 db.execute(
-                    "INSERT INTO tasks (name, command, device_id) VALUES (?, ?, ?)",
+                    "INSERT INTO task (name, command, device_id) VALUES (?, ?, ?)",
                     (name, command, device_id),
                 )
                 db.commit()
@@ -60,7 +60,7 @@ def create_task():
 @login_required
 def update_task(id: int):
     db = get_db()
-    device = db.execute("SELECT * FROM tasks WHERE id = ?", (id,)).fetchone()
+    device = db.execute("SELECT * FROM task WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
         error = None
         device_id = request.form["device_id"]
@@ -76,7 +76,7 @@ def update_task(id: int):
             db.execute("PRAGMA foreign_keys = ON")
             try:
                 db.execute(
-                    "UPDATE tasks SET device_id = ?, name = ?, command = ? WHERE id = ?",
+                    "UPDATE task SET device_id = ?, name = ?, command = ? WHERE id = ?",
                     (device_id, name, command, id),
                 )
                 db.commit()
@@ -92,7 +92,7 @@ def update_task(id: int):
 @login_required
 def delete_task(id: int):
     db = get_db()
-    db.execute("DELETE FROM tasks WHERE id = ?", (id,))
+    db.execute("DELETE FROM task WHERE id = ?", (id,))
     db.commit()
     return redirect(url_for("manage.index"))
 
@@ -105,7 +105,7 @@ def create_device():
         try:
             db.execute("PRAGMA foreign_keys = ON")
             db.execute(
-                "INSERT INTO devices (name, description) VALUES (:name, :description)",
+                "INSERT INTO device (name, description) VALUES (:name, :description)",
                 request.form,
             )
             db.commit()
@@ -120,12 +120,12 @@ def create_device():
 @login_required
 def update_device(id: int):
     db = get_db()
-    device = db.execute("SELECT * FROM devices WHERE id = ?", (id,)).fetchone()
+    device = db.execute("SELECT * FROM device WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
         name = request.form["name"]
         description = request.form["description"]
         db.execute(
-            "UPDATE devices SET name = ?, description = ? WHERE id = ?",
+            "UPDATE device SET name = ?, description = ? WHERE id = ?",
             (name, description, id),
         )
         db.commit()
@@ -138,6 +138,6 @@ def update_device(id: int):
 def delete_device(id: int):
     db = get_db()
     db.execute("PRAGMA foreign_keys = ON")
-    db.execute("DELETE FROM devices WHERE id = ?", (id,))
+    db.execute("DELETE FROM device WHERE id = ?", (id,))
     db.commit()
     return redirect(url_for("manage.index"))

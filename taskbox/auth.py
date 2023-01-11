@@ -37,7 +37,7 @@ def load_logged_in_user():
         g.user = None
     else:
         g.user = (
-            get_db().execute("SELECT * FROM users WHERE id = ?", (user_id,)).fetchone()
+            get_db().execute("SELECT * FROM user WHERE id = ?", (user_id,)).fetchone()
         )
 
 
@@ -49,20 +49,24 @@ def register():
     Validates that the username is not already taken. Hashes the
     password for security.
     """
+    db = get_db()
+    roles = db.execute("SELECT * FROM role").fetchall()
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        role_id = request.form["role_id"]
         error = None
         if not username:
             error = "Username is required."
         elif not password:
             error = "Password is required."
+        elif not role_id:
+            error = "Role ID is required."
         if error is None:
             try:
-                db = get_db()
                 db.execute(
-                    "INSERT INTO users (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    "INSERT INTO user (role_id, username, password) VALUES (?, ?, ?)",
+                    (role_id, username, generate_password_hash(password)),
                 )
                 db.commit()
             except db.IntegrityError:
@@ -70,7 +74,7 @@ def register():
             else:
                 return redirect(url_for("auth.login"))
         flash(error, "error")
-    return render_template("auth/register.html")
+    return render_template("auth/register.html", roles=roles)
 
 
 @auth.route("/auth/<int:id>/update", methods=("GET", "POST"))
@@ -78,7 +82,7 @@ def register():
 def update(id: int):
     """Update an existing users password."""
     db = get_db()
-    user = get_db().execute("SELECT * FROM users WHERE id = ?", (id,)).fetchone()
+    user = get_db().execute("SELECT * FROM user WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
         password = request.form["password"]
         error = None
@@ -86,7 +90,7 @@ def update(id: int):
             error = "Password is required."
         if error is None:
             db.execute(
-                "UPDATE users SET password = ? WHERE id = ?",
+                "UPDATE user SET password = ? WHERE id = ?",
                 (generate_password_hash(password), id),
             )
             db.commit()
@@ -102,7 +106,7 @@ def update(id: int):
 @login_required
 def delete(id: int):
     db = get_db()
-    db.execute("DELETE FROM users WHERE id = ?", (id,))
+    db.execute("DELETE FROM user WHERE id = ?", (id,))
     db.commit()
     if session.get("user_id") == id:
         session.clear()
@@ -118,7 +122,7 @@ def login():
         db = get_db()
         error = None
         user = db.execute(
-            "SELECT * FROM users WHERE username = ?", (username,)
+            "SELECT * FROM user WHERE username = ?", (username,)
         ).fetchone()
         if user is None:
             error = "Incorrect username or password."

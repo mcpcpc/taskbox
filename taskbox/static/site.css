@@ -15,6 +15,10 @@
 	margin: 0;
 }
 
+@media only screen and (max-width: 600px) {
+	#session {display: none}
+}
+
 table {width: 100%}
 
 th, td {
@@ -52,14 +56,10 @@ header {
 	border-bottom: 1px solid var(--color-secondary);
 }
 
-header ul {list-style: none}
-
 header ul li {
 	display: inline-block;
 	padding: 0 0.5rem;
 }
-
-header ul li a {transition: all 0.3s ease 0s}
 
 h1 {
 	font-size: 1em;
@@ -77,7 +77,7 @@ h2 {
 	font-size: 2em;
 }
 
-li, a, button {
+li, a, button, select {
 	font-size: 1em;
 	font-weight: 500;
 	text-decoration: none;
@@ -92,8 +92,8 @@ form {
 	grid-gap: calc(1rem * 1);
 }
 
-input, button {
-	border: 1px solid var(--color-foreground);
+input, button, select {
+	border: 1px solid var(--color-secondary);
 	border-radius: calc(1rem * 0.3);
 	padding: calc(1rem * 0.5);	
 }
@@ -109,7 +109,7 @@ button {
 	grid-column-end: 2;
 }
 
-.twocol input, .twocol button {
+.twocol input, .twocol button, .twocol select{
 	grid-column-start: 2;
 	grid-column-end: 3;
 }

@@ -15,15 +15,15 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for user in users %}
+			{% for user_v in users_v %}
 			<tr>
-				<td>{{ user.id }}</td>
-				<td>{{ user.username }}</td>
-				<td>{{ user.role }}</td>
+				<td>{{ user_v.user_id }}</td>
+				<td>{{ user_v.user_username }}</td>
+				<td>{{ user_v.role_title }}</td>
 				<td>
-					<a href="{{ url_for('auth.update', id=user['id']) }}">update</a>
-					{% if user.role != "administrator" %}
-					<a href="{{ url_for('auth.delete', id=user['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
+					<a href="{{ url_for('auth.update', id=user_v['user_id']) }}">update</a>
+					{% if user_v.user_username != 'admin' %}
+					<a href="{{ url_for('auth.delete', id=user_v['user_id']) }}" onclick="return confirm('Are you sure?')">delete</a>
 					{% endif %}
 				</td>
 			</tr>
