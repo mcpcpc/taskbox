@@ -61,7 +61,7 @@ def register():
         elif not password:
             error = "Password is required."
         elif not role_id:
-             error = "Role ID is required."
+            error = "Role ID is required."
         if error is None:
             try:
                 db.execute(

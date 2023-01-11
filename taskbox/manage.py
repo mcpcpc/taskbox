@@ -19,9 +19,9 @@ manage = Blueprint("manage", __name__, url_prefix="/manage")
 def index():
     devices = get_db().execute("select * from device").fetchall()
     tasks = get_db().execute("select * from task").fetchall()
-    users = get_db().execute("select * from user").fetchall()
+    users_v = get_db().execute("select * from user_v").fetchall()
     return render_template(
-        "manage/manage.html", devices=devices, tasks=tasks, users=users
+        "manage/manage.html", devices=devices, tasks=tasks, users_v=users_v
     )
 
 
