@@ -48,7 +48,7 @@ def token(id: int):
                 current_app.config["SECRET_KEY"],
                 algorithm="HS256"
             )
-            return token
+            return {"token": token}
         flash(error)
         return redirect(url_for("manage.token", id=id))
     return render_template("manage/token.html")
