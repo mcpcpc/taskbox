@@ -7,6 +7,7 @@ from os import makedirs
 from flask import Flask
 
 from taskbox.auth import auth
+from taskbox.api import api
 from taskbox.db import init_app
 from taskbox.run import run
 from taskbox.manage import manage
@@ -29,6 +30,7 @@ def create_app(test_config=None):
         pass
     init_app(app)
     app.register_blueprint(auth)
+    app.register_blueprint(api)
     app.register_blueprint(manage)
     app.register_blueprint(run)
     app.add_url_rule("/", endpoint="index")
