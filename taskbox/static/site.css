@@ -15,7 +15,7 @@
 	margin: 0;
 }
 
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 600px) {
 	#session {display: none}
 }
 
