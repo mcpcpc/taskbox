@@ -38,7 +38,7 @@ def token(id: int):
         error = None
         if not request.form["expires_in"]:
             error = "Expires In is required."
-        if int(request.form["expires_in"]) > 365 * 60 * 60:
+        if int(request.form["expires_in"]) > 31536000:
             error = "Expires In is too big."
         if error is None:
             expires_in = int(request.form["expires_in"])
