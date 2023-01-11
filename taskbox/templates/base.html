@@ -20,9 +20,7 @@
 			</ul>
 			<ul>
 				{% if session['user_id'] %}
-				<li>
-					<small>Logged in: {{ g['user']['username'] }}</small>
-				</li>
+				<li id="session"><small>{{ g['user']['username'] }}</small></li>
 				{% endif %}
 				<li>
 					{% if session['user_id'] %}
