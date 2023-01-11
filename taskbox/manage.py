@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
+
 from flask import Blueprint
 from flask import flash
 from flask import redirect
 from flask import request
 from flask import render_template
 from flask import url_for
+from jwt import encode as jwt_encode
 
 from taskbox.db import get_db
 from taskbox.auth import login_required
@@ -23,6 +28,18 @@ def index():
     return render_template(
         "manage/manage.html", devices=devices, tasks=tasks, users_v=users_v
     )
+
+
+@manage.get("/user/<int:id>/token", methods=("GET",))
+@login_required
+def token(id: int):
+    expires_in = datetime.now(tz=timezone.utc) + timedelta(seconds=600)
+    token = jwt_encode(
+        dict(confirm=id, exp=expires_in),
+        current_app.config["SECRET_KEY"],
+        algorithm="HS256"
+    )
+    return token
 
 
 @manage.route("/tasks/create", methods=("GET", "POST"))
