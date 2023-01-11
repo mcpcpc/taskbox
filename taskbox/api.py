@@ -22,9 +22,9 @@ def token_required(view):
     def wrapped_view(**kwargs):
         if request.authorization is None:
             return "Authorization is missing.", 401
-        elif reqest.authorization["password"] is None:
+        elif request.authorization["password"] is None:
             return "Token missing.", 401
-        token = reqest.authorization["password"]
+        token = request.authorization["password"]
         secret_key = current_app.config["SECRET_KEY"]
         try:
             jwt_decode(token, secret_key, algorithms=["HS256"])
