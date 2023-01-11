@@ -6,7 +6,7 @@
 	<label for="role_id">Role ID</label>
 	<select name="role_id" required>
 	{% for role in roles %}
-		<option value={{ role.id }}>temp</option>
+		<option value={{ role.id }}>{{ role.title }}</option>
 	{% endfor %}
 	</select>
 	<label for="username">User Name</label>
