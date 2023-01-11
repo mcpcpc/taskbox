@@ -51,7 +51,7 @@ def token(id: int):
             return {"token": token}
         flash(error)
         return redirect(url_for("manage.token", id=id))
-    return render_template("manage/user_token.html")
+    return render_template("manage/create_token.html")
 
 
 @manage.route("/tasks/create", methods=("GET", "POST"))
