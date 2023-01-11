@@ -11,6 +11,7 @@ from jwt import encode as jwt_encode
 from jwt import decode as jwt_decode
 from jwt.exceptions import InvalidSignatureError
 from jwt.exceptions import ExpiredSignatureError
+from jwt.exceptions import DecodeError
 
 from taskbox.db import get_db
 
@@ -32,6 +33,8 @@ def token_required(view):
             return "Token is expired.", 401
         except InvalidSignatureError:
             return "Token has invalid signature.", 401
+        except DecodeError:
+            return "Token is malformed.", 401
         return view(**kwargs)
     return wrapped_view
 
