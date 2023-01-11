@@ -30,7 +30,7 @@ def index():
     )
 
 
-@manage.get("/user/<int:id>/token", methods=("GET",))
+@manage.route("/user/<int:id>/token", methods=("GET",))
 @login_required
 def token(id: int):
     expires_in = datetime.now(tz=timezone.utc) + timedelta(seconds=600)
