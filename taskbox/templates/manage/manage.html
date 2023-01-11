@@ -22,7 +22,7 @@
 				<td>{{ user.role_id }}</td>
 				<td>
 					<a href="{{ url_for('auth.update', id=user['id']) }}">update</a>
-					{% if user.role_id != '1' %}
+					{% if user.role_id != 1 %}
 					<a href="{{ url_for('auth.delete', id=user['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
 					{% endif %}
 				</td>
