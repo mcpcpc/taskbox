@@ -39,4 +39,4 @@ def token_required(view):
 @api.route("/task/<int:id>", methods=("GET",))
 @token_required
 def read_task(id: int):
-    return get_db().execute("SELECT * FROM task WHER id = ?", (id,)).fetchone()
+    return get_db().execute("SELECT * FROM task WHERE id = ?", (id,)).fetchone()
