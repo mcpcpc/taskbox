@@ -4,9 +4,11 @@
 <h2>Register User</h2>
 <form method="post" class="twocol">
 	<label for="role_id">Role ID</label>
+	<select name="role_id" required>
 	{% for role in roles %}
-		<input name="role_id" type="radio" value={{ role.id }}>
-	{% endfor %}	
+		<option value={{ role.id }}>temp</option>
+	{% endfor %}
+	</select>
 	<label for="username">User Name</label>
 	<input name="username" type="text" required>
 	<label for="password">Password</label>
