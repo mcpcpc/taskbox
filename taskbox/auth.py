@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash
 
 from taskbox.db import get_db
 
-auth = Blueprint("auth", __name__)
+auth = Blueprint("auth", __name__, url_prefix="/auth")
 
 
 def login_required(view):
@@ -41,7 +41,7 @@ def load_logged_in_user():
         )
 
 
-@auth.route("/auth/register", methods=("GET", "POST"))
+@auth.route("/register", methods=("GET", "POST"))
 @login_required
 def register():
     """Register a new user.
@@ -77,7 +77,7 @@ def register():
     return render_template("auth/register.html", roles=roles)
 
 
-@auth.route("/auth/<int:id>/update", methods=("GET", "POST"))
+@auth.route("/<int:id>/update", methods=("GET", "POST"))
 @login_required
 def update(id: int):
     """Update an existing users password."""
@@ -102,7 +102,7 @@ def update(id: int):
     return render_template("auth/update.html", user=user)
 
 
-@auth.route("/auth/<int:id>/delete", methods=("GET",))
+@auth.route("/<int:id>/delete", methods=("GET",))
 @login_required
 def delete(id: int):
     db = get_db()
@@ -113,7 +113,7 @@ def delete(id: int):
     return redirect(url_for("manage.index"))
 
 
-@auth.route("/auth/login", methods=("GET", "POST"))
+@auth.route("/login", methods=("GET", "POST"))
 def login():
     """Log in a registered user by adding the user id to the session."""
     if request.method == "POST":
@@ -136,7 +136,7 @@ def login():
     return render_template("auth/login.html")
 
 
-@auth.route("/auth/logout")
+@auth.route("/logout")
 def logout():
     """Clear the current session, including the stored user id."""
     session.clear()
