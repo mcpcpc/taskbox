@@ -46,7 +46,7 @@ def token(id: int):
             token = jwt_encode(
                 dict(confirm=id, exp=exp),
                 current_app.config["SECRET_KEY"],
-                algorithm="HS256"
+                algorithm="HS256",
             )
             return {"token": token}
         flash(error)

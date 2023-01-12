@@ -22,7 +22,7 @@ class ApiTestCase(TestCase):
     def setUp(self):
         self.db = "file::memory:?cache=shared"
         self.app = create_app(
-                {"TESTING": True, "DATABASE": self.db, "SECRET_KEY": "dev"}
+            {"TESTING": True, "DATABASE": self.db, "SECRET_KEY": "dev"}
         )
         self.client = self.app.test_client()
         self.ctx = self.app.app_context()
@@ -44,7 +44,23 @@ class ApiTestCase(TestCase):
         db.executescript(self._preload)
         self.client.post("/auth/login", data={"username": "test", "password": "test"})
         data = self.client.post("/manage/user/1/token", data={"expires_in": 600})
-        token_encoded = b64encode(f":{data.json['token']}".encode("utf-8")).decode("utf-8")
-        response = self.client.get("/api/task/1", headers={"Authorization": f"Basic {token_encoded}"})
+        token_encoded = b64encode(f":{data.json['token']}".encode("utf-8")).decode(
+            "utf-8"
+        )
+        response = self.client.get(
+            "/api/task/1", headers={"Authorization": f"Basic {token_encoded}"}
+        )
         self.assertEqual(response.status_code, 200)
 
+    def test_read_device(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
+        data = self.client.post("/manage/user/1/token", data={"expires_in": 600})
+        token_encoded = b64encode(f":{data.json['token']}".encode("utf-8")).decode(
+            "utf-8"
+        )
+        response = self.client.get(
+            "/api/device/1", headers={"Authorization": f"Basic {token_encoded}"}
+        )
+        self.assertEqual(response.status_code, 200)

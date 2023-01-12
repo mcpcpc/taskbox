@@ -17,8 +17,10 @@ from taskbox.db import get_db
 
 api = Blueprint("api", __name__, url_prefix="/api")
 
+
 def token_required(view):
     """View that checks for authentication headers."""
+
     @wraps(view)
     def wrapped_view(**kwargs):
         if request.authorization is None:
@@ -36,6 +38,7 @@ def token_required(view):
         except DecodeError:
             return "Token is malformed.", 401
         return view(**kwargs)
+
     return wrapped_view
 
 
@@ -44,3 +47,10 @@ def token_required(view):
 def read_task(id: int):
     task = get_db().execute("SELECT * FROM task WHERE id = ?", (id,)).fetchone()
     return dict(task)
+
+
+@api.route("/device/<int:id>", methods=("GET",))
+@token_required
+def read_device(id: int):
+    device = get_db().execute("SELECT * FROM device WHERE id = ?", (id,)).fetchone()
+    return dict(device)
