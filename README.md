@@ -47,6 +47,24 @@ flask --app taskbox init-db
 
 ## Deployment
 
+Before deployment, we *strongly* encourage you to override the
+default `SECRET_KEY` variable. This can be done by creating a
+`conf.py` file and placing it in the same root as the instance (i.e. typically where the SQLite database resides).
+
+```python
+SECRET_KEY = “192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf“
+```
+
+There are a number of ways to generate a secret key value. The
+simplest would be to use the built-in secrets Python library.
+
+```shell
+$ python -c ‘import secrets; print(secrets.token_hex())’
+‘192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf’
+```
+
+### Waitress
+
 Production WSGI via waitress.
 
 ```shell
