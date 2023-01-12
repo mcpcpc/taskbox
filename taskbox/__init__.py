@@ -11,6 +11,7 @@ from taskbox.api import api
 from taskbox.db import init_app
 from taskbox.run import run
 from taskbox.manage import manage
+from taskbox.token import token
 
 
 def create_app(test_config=None):
@@ -33,5 +34,6 @@ def create_app(test_config=None):
     app.register_blueprint(api)
     app.register_blueprint(manage)
     app.register_blueprint(run)
+    app.register_blueprint(token)
     app.add_url_rule("/", endpoint="index")
     return app

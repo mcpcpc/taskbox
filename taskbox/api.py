@@ -7,27 +7,11 @@ from functools import wraps
 from flask import Blueprint
 from flask import current_app
 from flask import request
-from jwt import decode as jwt_decode
 
 from taskbox.db import get_db
+from taskbox.token import token_required
 
 api = Blueprint("api", __name__, url_prefix="/api")
-
-
-def token_required(view):
-    """View that checks for authentication headers."""
-
-    @wraps(view)
-    def wrapped_view(**kwargs):
-        secret_key = current_app.config["SECRET_KEY"]
-        try:
-            token = request.authorization["password"]
-            jwt_decode(token, secret_key, algorithms=["HS256"])
-        except Error as error:
-            return error, 401
-        return view(**kwargs)
-
-    return wrapped_view
 
 
 @api.route("/task/<int:id>", methods=("GET",))

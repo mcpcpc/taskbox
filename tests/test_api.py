@@ -32,18 +32,11 @@ class ApiTestCase(TestCase):
     def tearDown(self):
         self.ctx.pop()
 
-    def test_read_task_get(self):
-        db = connect(self.db)
-        db.executescript(self._preload)
-        self.client.post("/auth/login", data={"username": "test", "password": "test"})
-        response = self.client.get("/manage/user/1/token")
-        self.assertEqual(response.status_code, 200)
-
     def test_read_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
         self.client.post("/auth/login", data={"username": "test", "password": "test"})
-        data = self.client.post("/manage/user/1/token", data={"expires_in": 600})
+        data = self.client.post("/token/create", data={"expires_in": 600})
         token_encoded = b64encode(f":{data.json['token']}".encode("utf-8")).decode(
             "utf-8"
         )
@@ -56,7 +49,7 @@ class ApiTestCase(TestCase):
         db = connect(self.db)
         db.executescript(self._preload)
         self.client.post("/auth/login", data={"username": "test", "password": "test"})
-        data = self.client.post("/manage/user/1/token", data={"expires_in": 600})
+        data = self.client.post("/token/create", data={"expires_in": 600})
         token_encoded = b64encode(f":{data.json['token']}".encode("utf-8")).decode(
             "utf-8"
         )
