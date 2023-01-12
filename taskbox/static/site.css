@@ -67,15 +67,17 @@ header ul li {
 	padding: 0 0.5rem;
 }
 
+h1, h2, h3 {
+	color: var(--color-secondary);
+}
+
 h1 {
 	text-transform: uppercase;
 	font-weight: 600;
-	color: var(--color-secondary);
 }
 
 h2, h3 {
 	margin-bottom: 1rem;
-	color: var(--color-secondary);
 }
 
 h2 {
