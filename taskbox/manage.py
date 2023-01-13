@@ -34,6 +34,8 @@ def index():
 @manage.route("/tasks/create", methods=("GET", "POST"))
 @login_required
 def create_task():
+    db = get_db()
+    devices = db.execute("SELECT * FROM device").fetchall()
     if request.method == "POST":
         error = None
         device_id = request.form["device_id"]
@@ -47,7 +49,6 @@ def create_task():
             error = "Device ID is required."
         if error is None:
             try:
-                db = get_db()
                 db.execute("PRAGMA foreign_keys = ON")
                 db.execute(
                     "INSERT INTO task (name, command, device_id) VALUES (?, ?, ?)",
@@ -59,14 +60,15 @@ def create_task():
             else:
                 return redirect(url_for("manage.index"))
         flash(error, "error")
-    return render_template("manage/create_task.html")
+    return render_template("manage/create_task.html", devices=devices)
 
 
 @manage.route("/tasks/<int:id>/update", methods=("GET", "POST"))
 @login_required
 def update_task(id: int):
     db = get_db()
-    device = db.execute("SELECT * FROM task WHERE id = ?", (id,)).fetchone()
+    task = db.execute("SELECT * FROM task WHERE id = ?", (id,)).fetchone()
+    devices = db.execute("SELECT * FROM device").fetchall()
     if request.method == "POST":
         error = None
         device_id = request.form["device_id"]
@@ -91,7 +93,7 @@ def update_task(id: int):
             else:
                 return redirect(url_for("manage.index"))
         flash(error, "error")
-    return render_template("manage/update_task.html", device=device)
+    return render_template("manage/update_task.html", task=task, devices=devices)
 
 
 @manage.route("/tasks/<int:id>/delete", methods=("GET",))
@@ -128,14 +130,22 @@ def update_device(id: int):
     db = get_db()
     device = db.execute("SELECT * FROM device WHERE id = ?", (id,)).fetchone()
     if request.method == "POST":
+        error = None
         name = request.form["name"]
         description = request.form["description"]
-        db.execute(
-            "UPDATE device SET name = ?, description = ? WHERE id = ?",
-            (name, description, id),
-        )
-        db.commit()
-        return redirect(url_for("manage.index"))
+        if not name:
+            error = "Name is required."
+        elif not description:
+            error = "Description is required."
+        if error is None:
+            db.execute(
+                "UPDATE device SET name = ?, description = ? WHERE id = ?",
+                (name, description, id),
+            )
+            db.commit()
+            return redirect(url_for("manage.index"))
+        flash(error)
+        return redirect(url_for("manage.update_device", id=id))
     return render_template("manage/update_device.html", device=device)
 
 

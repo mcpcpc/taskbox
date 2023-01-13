@@ -13,7 +13,6 @@
 	<table>
 		<thead>
 			<tr>
-				<th>ID</th>
 				<th>Username</th>
 				<th>Role</th>
 				<th style="width:10%"></th>
@@ -22,7 +21,6 @@
 		<tbody>
 			{% for user_v in users_v %}
 			<tr>
-				<td>{{ user_v.user_id }}</td>
 				<td>{{ user_v.user_username }}</td>
 				<td>{{ user_v.role_title }}</td>
 				<td>
@@ -41,7 +39,6 @@
 	<table>
 		<thead>
 			<tr>
-				<th>ID</th>
 				<th>Name</th>
 				<th>Description</th>
 				<th style="width:10%"></th>
@@ -50,7 +47,6 @@
 		<tbody>
 			{% for device in devices %}
 			<tr>
-				<td>{{ device.id }}</td>
 				<td>{{ device.name }}</td>
 				<td>{{ device.description }}</td>
 				<td>
@@ -67,7 +63,6 @@
 	<table>
 		<thead>
 			<tr>
-				<th>ID</th>
 				<th>Device ID</th>
 				<th>Name</th>
 				<th>Command</th>
@@ -77,7 +72,6 @@
 		<tbody>
 			{% for task in tasks %}
 			<tr>
-				<td>{{ task.id }}</td>
 				<td>{{ task.device_id }}</td>
 				<td>{{ task.name }}</td>
 				<td class="cmd">{{ task.command }}</td>

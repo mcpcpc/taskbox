@@ -3,8 +3,6 @@
 {% block main %}
 <h2>Update Existing Device</h2>
 <form method="post" class="twocol">
-	<label for="id">ID</label>
-	<input name="id" type="integer" value="{{ device.id }}" readonly>
 	<label for="name">Name</label>
 	<input name="name" type="text" value="{{ device.name }}" required>
 	<label for="description">Description</label>

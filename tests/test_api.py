@@ -37,9 +37,9 @@ class ApiTestCase(TestCase):
         db.executescript(self._preload)
         self.client.post("/auth/login", data={"username": "test", "password": "test"})
         data = self.client.post("/token/create", data={"expires_in": 600})
-        token_encoded = b64encode(f":{data.json['access_token']}".encode("utf-8")).decode(
-            "utf-8"
-        )
+        token_encoded = b64encode(
+            f":{data.json['access_token']}".encode("utf-8")
+        ).decode("utf-8")
         response = self.client.get(
             "/api/task/1", headers={"Authorization": f"Basic {token_encoded}"}
         )
@@ -50,9 +50,9 @@ class ApiTestCase(TestCase):
         db.executescript(self._preload)
         self.client.post("/auth/login", data={"username": "test", "password": "test"})
         data = self.client.post("/token/create", data={"expires_in": 600})
-        token_encoded = b64encode(f":{data.json['access_token']}".encode("utf-8")).decode(
-            "utf-8"
-        )
+        token_encoded = b64encode(
+            f":{data.json['access_token']}".encode("utf-8")
+        ).decode("utf-8")
         response = self.client.get(
             "/api/device/1", headers={"Authorization": f"Basic {token_encoded}"}
         )
