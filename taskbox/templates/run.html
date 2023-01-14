@@ -21,11 +21,11 @@
             <td>{{ (tasks|first)["device_description"] }}</td>
 	    <td>
 	    {% for task in tasks %}
-		    <a href={{ url_for('run.run_task', id=task['task_id']) }}>{{task.task_name}}</a>
-            {% endfor %}
+	    <a href={{ url_for('run.run_task', id=task['task_id']) }}>{{task.task_name}}</a>
+	    {% endfor %}
 	    </td>
-        </tr>
-    {% endfor %}
+	</tr>
+	{% endfor %}
     </tbody>
 </table>
 

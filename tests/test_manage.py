@@ -19,7 +19,9 @@ class ManageTestCase(TestCase):
 
     def setUp(self):
         self.db = "file::memory:?cache=shared"
-        self.app = create_app({"TESTING": True, "DATABASE": self.db})
+        self.app = create_app(
+            {"TESTING": True, "DATABASE": self.db, "SECRET_KEY": "dev"}
+        )
         self.client = self.app.test_client()
         self.ctx = self.app.app_context()
         self.ctx.push()
@@ -41,29 +43,6 @@ class ManageTestCase(TestCase):
         )
         self.assertEqual(response.headers["location"], "/manage/")
 
-    def test_update_device(self):
-        db = connect(self.db)
-        db.executescript(self._preload)
-        self.client.post(
-            "/auth/login",
-            data={"username": "test", "password": "test"},
-        )
-        response = self.client.post(
-            "/manage/devices/1/update",
-            data={"name": "name1_", "description": "description1_"},
-        )
-        self.assertEqual(response.headers["location"], "/manage/")
-
-    def test_delete_device(self):
-        db = connect(self.db)
-        db.executescript(self._preload)
-        self.client.post(
-            "/auth/login",
-            data={"username": "test", "password": "test"},
-        )
-        response = self.client.get("/manage/devices/1/delete")
-        self.assertEqual(response.headers["location"], "/manage/")
-
     def test_create_device_flash(self):
         db = connect(self.db)
         db.executescript(self._preload)
@@ -81,6 +60,50 @@ class ManageTestCase(TestCase):
                     follow_redirects=True,
                 )
                 self.assertIn(message, response.data)
+
+    def test_update_device(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        response = self.client.post(
+            "/manage/devices/1/update",
+            data={"name": "name1_", "description": "description1_"},
+        )
+        self.assertEqual(response.headers["location"], "/manage/")
+
+    def test_update_device_flash(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        parameters = [
+            ("", "description1_", b"Name is required"),
+            ("name1_", "", b"Description is required"),
+        ]
+        for parameter in parameters:
+            with self.subTest(parameter=parameter):
+                name, description, message = parameter
+                response = self.client.post(
+                    "/manage/devices/1/update",
+                    data={"name": name, "description": description},
+                    follow_redirects=True,
+                )
+                self.assertIn(message, response.data)
+
+    def test_delete_device(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        response = self.client.get("/manage/devices/1/delete")
+        self.assertEqual(response.headers["location"], "/manage/")
 
     def test_create_task(self):
         db = connect(self.db)

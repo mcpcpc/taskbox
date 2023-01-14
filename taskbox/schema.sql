@@ -1,11 +1,12 @@
 -- Initialize the database.
 -- Drop any existing data and create empty tables.
 
+DROP VIEW IF EXISTS task_v;
+DROP VIEW IF EXISTS user_v;
 DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS permission;
 DROP TABLE IF EXISTS role_permission;
 DROP TABLE IF EXISTS user;
-DROP VIEW IF EXISTS task_v;
 DROP TABLE IF EXISTS device;
 DROP TABLE IF EXISTS task;
 

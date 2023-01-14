@@ -10,7 +10,9 @@ from taskbox import create_app
 class InitTestCase(TestCase):
     def setUp(self):
         self.db = "file::memory:?cache=shared"
-        self.app = create_app({"TESTING": True, "DATABASE": self.db})
+        self.app = create_app(
+            {"TESTING": True, "DATABASE": self.db, "SECRET_KEY": "dev"}
+        )
         self.runner = self.app.test_cli_runner()
         self.ctx = self.app.app_context()
         self.ctx.push()

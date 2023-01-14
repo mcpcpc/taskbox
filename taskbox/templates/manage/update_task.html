@@ -3,14 +3,16 @@
 {% block main %}
 <h2>Update Existing Task</h2>
 <form method="post" class="twocol">
-	<label for="id">ID</label>
-	<input name="id" type="integer" value="{{ device.id }}" readonly>
 	<label for="device_id">Device ID</label>
-	<input name="device_id" type="integer" value="{{ device.device_id }}" required>
+	<select name="device_id" required>
+		{% for device in devices %}
+		<option value={{ device.id }} {% if task.device_id == device.id %}selected{% endif %}>{{ device.name }}</option>
+		{% endfor %}
+	</select>
 	<label for="name">Name</label>
-	<input name="name" type="text" value="{{ device.name }}" required>
+	<input name="name" type="text" value="{{ task.name }}" required>
 	<label for="command">Command</label>
-	<input name="command" type="text" value="{{ device.command }}" required>
+	<input name="command" type="text" value="{{ task.command }}" required>
 	<button>Update</button>
 </form>
 {% endblock %}

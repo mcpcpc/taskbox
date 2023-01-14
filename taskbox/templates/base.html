@@ -14,13 +14,13 @@
 			<a href="/"><h1>TaskBOX</h1></a>
 			<ul>
 				<li><a href="{{ url_for('index') }}">Run</a></li>
-			{% if session['user_id'] %}
+				{% if session['user_id'] %}
 				<li><a href="{{ url_for('manage.index') }}">Manage</a></li>
-			{% endif %}
+				{% endif %}
 			</ul>
 			<ul>
 				{% if session['user_id'] %}
-				<li id="session"><small>User: {{ g['user']['username'] }}</small></li>
+				<li id="session"><small>{{ g['user']['username'] }}</small></li>
 				{% endif %}
 				<li>
 					{% if session['user_id'] %}

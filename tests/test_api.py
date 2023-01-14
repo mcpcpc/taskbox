@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from base64 import b64encode
+
 from pathlib import Path
 from sqlite3 import connect
 from unittest import main
@@ -9,7 +11,7 @@ from unittest import TestCase
 from taskbox import create_app
 
 
-class RunTestCase(TestCase):
+class ApiTestCase(TestCase):
     @classmethod
     def setUpClass(cls):
         cls._resources = Path(__file__).parent
@@ -30,14 +32,28 @@ class RunTestCase(TestCase):
     def tearDown(self):
         self.ctx.pop()
 
-    def test_runner_index(self):
+    def test_read_task(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.get("/")
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
+        data = self.client.post("/token/create", data={"expires_in": 600})
+        token_encoded = b64encode(
+            f":{data.json['access_token']}".encode("utf-8")
+        ).decode("utf-8")
+        response = self.client.get(
+            "/api/task/1", headers={"Authorization": f"Basic {token_encoded}"}
+        )
         self.assertEqual(response.status_code, 200)
 
-    def test_run_action(self):
+    def test_read_device(self):
         db = connect(self.db)
         db.executescript(self._preload)
-        response = self.client.get("/run/1")
-        self.assertEqual(response.headers["location"], "/")
+        self.client.post("/auth/login", data={"username": "test", "password": "test"})
+        data = self.client.post("/token/create", data={"expires_in": 600})
+        token_encoded = b64encode(
+            f":{data.json['access_token']}".encode("utf-8")
+        ).decode("utf-8")
+        response = self.client.get(
+            "/api/device/1", headers={"Authorization": f"Basic {token_encoded}"}
+        )
+        self.assertEqual(response.status_code, 200)
