@@ -9,7 +9,7 @@
 
 * {
 	font-size: 1em;
-	text-decoration: underline;
+	text-decoration: none;
 	font-family: Arial, Helvetica, sans-serif;
 	color: var(--color-foreground);
 	border: 0;
