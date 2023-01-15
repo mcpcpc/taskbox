@@ -11,77 +11,63 @@
 <section>
 	<h3>Users (<a href="{{ url_for('auth.register') }}">add</a>)</h3>
 	<table>
-		<thead>
-			<tr>
-				<th>Username</th>
-				<th>Role</th>
-				<th style="width:10%"></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for user_v in users_v %}
-			<tr>
-				<td>{{ user_v.user_username }}</td>
-				<td>{{ user_v.role_title }}</td>
-				<td>
-					<a href="{{ url_for('auth.update', id=user_v['user_id']) }}">update</a>
-					{% if user_v.user_username != 'admin' %}
-					<a href="{{ url_for('auth.delete', id=user_v['user_id']) }}" onclick="return confirm('Are you sure?')">delete</a>
-					{% endif %}
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
+		<tr>
+			<th>Username</th>
+			<th>Role</th>
+			<th></th>
+		</tr>
+		{% for user_v in users_v %}
+		<tr>
+			<td>{{ user_v.user_username }}</td>
+			<td>{{ user_v.role_title }}</td>
+			<td class="command">
+				<a href="{{ url_for('auth.update', id=user_v['user_id']) }}">update</a>
+				{% if user_v.user_username != 'admin' %}
+				<a href="{{ url_for('auth.delete', id=user_v['user_id']) }}" onclick="return confirm('Are you sure?')">delete</a>
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
 	</table>
 </section>
 <section>
 	<h3>Devices (<a href="{{ url_for('manage.create_device') }}">add</a>)</h3>
 	<table>
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th style="width:10%"></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for device in devices %}
-			<tr>
-				<td>{{ device.name }}</td>
-				<td>{{ device.description }}</td>
-				<td>
-					<a href="{{ url_for('manage.update_device', id=device['id']) }}">update</a>
-					<a href="{{ url_for('manage.delete_device', id=device['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
+		<tr>
+			<th>Name</th>
+			<th colspan="2">Description</th>
+		</tr>
+		{% for device in devices %}
+		<tr>
+			<td>{{ device.name }}</td>
+			<td>{{ device.description }}</td>
+			<td class="command">
+				<a href="{{ url_for('manage.update_device', id=device['id']) }}">update</a>
+				<a href="{{ url_for('manage.delete_device', id=device['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
+			</td>
+		</tr>
+		{% endfor %}
 	</table>
 </section>
 <section>
 	<h3>Tasks (<a href="{{ url_for('manage.create_task') }}">add</a>)</h3>
 	<table>
-		<thead>
-			<tr>
-				<th>Device ID</th>
-				<th>Name</th>
-				<th>Command</th>
-				<th style="width:10%"></th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for task in tasks %}
-			<tr>
-				<td>{{ task.device_id }}</td>
-				<td>{{ task.name }}</td>
-				<td class="cmd">{{ task.command }}</td>
-				<td>
-					<a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a>
-					<a href="{{ url_for('manage.delete_task', id=task['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
-				</td>
-			</tr>
-			{% endfor %}
-		</tbody>
+		<tr>
+			<th>Device ID</th>
+			<th>Name</th>
+			<th colspan="2">Command</th>
+		</tr>
+		{% for task in tasks %}
+		<tr>
+			<td>{{ task.device_id }}</td>
+			<td>{{ task.name }}</td>
+			<td>{{ task.command }}</td>
+			<td class="command">
+				<a href="{{ url_for('manage.update_task', id=task['id']) }}">update</a>
+				<a href="{{ url_for('manage.delete_task', id=task['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
+			</td>
+		</tr>
+		{% endfor %}
 	</table>
 </section>
 {% endblock %}
