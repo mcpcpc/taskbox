@@ -13,11 +13,11 @@
     	{% for device_name, tasks in tasks_v|groupby("device_name") %}
         <tr>
             <td>{{ device_name }}</td>
-            <td>{{ (tasks|first)["device_description"] }}</td>
-	    <td>
-	    {% for task in tasks %}
-	    <a href={{ url_for('run.run_task', id=task['task_id']) }}>{{task.task_name}}</a>
-	    {% endfor %}
+	    <td>{{ (tasks|first)["device_description"] }}</td>
+	    <td class="command">
+		    {% for task in tasks %}
+		    <a href={{ url_for('run.run_task', id=task['task_id']) }}>{{task.task_name}}</a>
+		    {% endfor %}
 	    </td>
 	</tr>
 	{% endfor %}
