@@ -136,7 +136,11 @@ class ManageTestCase(TestCase):
                 device_id, name, description, message = parameter
                 response = self.client.post(
                     "/manage/test/create",
-                    data={"device_id": device_id, "name": name, "description": description},
+                    data={
+                        "device_id": device_id,
+                        "name": name,
+                        "description": description,
+                    },
                     follow_redirects=True,
                 )
                 self.assertIn(message, response.data)
@@ -172,10 +176,24 @@ class ManageTestCase(TestCase):
                 device_id, name, description, message = parameter
                 response = self.client.post(
                     "/manage/test/1/update",
-                    data={"device_id": device_id, "name": name, "description": description},
+                    data={
+                        "device_id": device_id,
+                        "name": name,
+                        "description": description,
+                    },
                     follow_redirects=True,
                 )
                 self.assertIn(message, response.data)
+
+    def test_delete_test(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        response = self.client.get("/manage/test/1/delete")
+        self.assertEqual(response.headers["location"], "/manage/")
 
     def test_create_task(self):
         db = connect(self.db)
