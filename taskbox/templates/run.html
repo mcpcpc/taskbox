@@ -7,19 +7,22 @@
 <p>Connect the unit under test to the test box interface and select the appropriate action from the list below.</p>
 
 <table>
-        <tr>
-            <th colspan="3">Device</th>
-        </tr>
-    	{% for device_name, tasks in tasks_v|groupby("device_name") %}
-        <tr>
-            <td>{{ device_name }}</td>
-	    <td>{{ (tasks|first)["device_description"] }}</td>
-	    <td class="command">
-		    {% for task in tasks %}
-		    <a href={{ url_for('run.run_task', id=task['task_id']) }}>{{task.task_name}}</a>
-		    {% endfor %}
-	    </td>
+	<tr>
+		<th >Device</th>
+		<th colspan="2">Test</th>
 	</tr>
+	{% for device_name, tasks_t1 in tasks_v|groupby("device_name") %}
+	{% for test_name, tasks in tasks_t1|groupby("test_name") %}
+	<tr>
+		<td>{{ device_name }}<br /><small>{{ (tasks|first)['device_description'] }}</small></td>
+		<td>{{ test_name }}<br /><small>{{ (tasks|first)['test_description'] }}</small></td>
+		<td class="command">
+			{% for task in tasks %}
+			<a href={{ url_for('run.run_task', id=task['task_id']) }}>{{task.task_name}}</a>
+			{% endfor %}
+		</td>
+	</tr>
+	{% endfor %}
 	{% endfor %}
 </table>
 

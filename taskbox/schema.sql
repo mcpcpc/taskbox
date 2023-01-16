@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS role;
 DROP TABLE IF EXISTS permission;
 DROP TABLE IF EXISTS role_permission;
 DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS test;
 DROP TABLE IF EXISTS device;
 DROP TABLE IF EXISTS task;
 
@@ -56,20 +57,33 @@ CREATE TABLE device (
 	description TEXT NOT NULL UNIQUE
 );
 
+CREATE TABLE test (
+	id INTEGER PRIMARY KEY,
+	name TEXT NOT NULL,
+	description TEXT NOT NULL,
+	device_id INTEGER NOT NULL,
+	FOREIGN KEY(device_id) REFERENCES device(id) ON DELETE CASCADE ON UPDATE NO ACTION
+);
+
 CREATE TABLE task (
 	id INTEGER PRIMARY KEY,
 	name TEXT NOT NULL,
 	command TEXT NOT NULL,
-	device_id INTEGER NOT NULL,
-	FOREIGN KEY(device_id) REFERENCES device(id) ON DELETE CASCADE ON UPDATE NO ACTION
+	test_id INTEGER NOT NULL,
+	FOREIGN KEY(test_id) REFERENCES test(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 CREATE VIEW task_v AS SELECT
 	device.name AS device_name,
 	device.description AS device_description,
-	task.id as task_id,
+	test.id AS test_id,
+	test.name AS test_name,
+	test.description AS test_description,
+	task.id AS task_id,
 	task.name AS task_name
-FROM device INNER JOIN task ON task.device_id = device.id;
+FROM device
+	INNER JOIN test ON test.device_id = device.id
+	INNER JOIN task ON task.test_id = test.id;
 
 CREATE VIEW user_v AS SELECT
 	role.title as role_title,

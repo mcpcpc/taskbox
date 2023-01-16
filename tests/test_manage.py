@@ -38,7 +38,7 @@ class ManageTestCase(TestCase):
             data={"username": "test", "password": "test"},
         )
         response = self.client.post(
-            "/manage/devices/create",
+            "/manage/device/create",
             data={"name": "name2", "description": "description2"},
         )
         self.assertEqual(response.headers["location"], "/manage/")
@@ -55,7 +55,7 @@ class ManageTestCase(TestCase):
             with self.subTest(parameter=parameter):
                 name, description, message = parameter
                 response = self.client.post(
-                    "/manage/devices/create",
+                    "/manage/device/create",
                     data={"name": name, "description": message},
                     follow_redirects=True,
                 )
@@ -69,7 +69,7 @@ class ManageTestCase(TestCase):
             data={"username": "test", "password": "test"},
         )
         response = self.client.post(
-            "/manage/devices/1/update",
+            "/manage/device/1/update",
             data={"name": "name1_", "description": "description1_"},
         )
         self.assertEqual(response.headers["location"], "/manage/")
@@ -89,7 +89,7 @@ class ManageTestCase(TestCase):
             with self.subTest(parameter=parameter):
                 name, description, message = parameter
                 response = self.client.post(
-                    "/manage/devices/1/update",
+                    "/manage/device/1/update",
                     data={"name": name, "description": description},
                     follow_redirects=True,
                 )
@@ -102,8 +102,80 @@ class ManageTestCase(TestCase):
             "/auth/login",
             data={"username": "test", "password": "test"},
         )
-        response = self.client.get("/manage/devices/1/delete")
+        response = self.client.get("/manage/device/1/delete")
         self.assertEqual(response.headers["location"], "/manage/")
+
+    def test_create_test(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        response = self.client.post(
+            "/manage/test/create",
+            data={"name": "name2", "device_id": 1, "description": "description2"},
+        )
+        self.assertEqual(response.headers["location"], "/manage/")
+
+    def test_create_test_flash(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        parameters = [
+            ("", "name1", "description1", b"Device ID is required"),
+            ("1", "", "description1", b"Name is required"),
+            ("1", "name1", "", b"Description is required"),
+            ("2", "name1", "description1", b"Device ID does not exist"),
+        ]
+        for parameter in parameters:
+            with self.subTest(parameter=parameter):
+                device_id, name, description, message = parameter
+                response = self.client.post(
+                    "/manage/test/create",
+                    data={"device_id": device_id, "name": name, "description": description},
+                    follow_redirects=True,
+                )
+                self.assertIn(message, response.data)
+
+    def test_update_test(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        response = self.client.post(
+            "/manage/test/1/update",
+            data={"name": "name2_", "device_id": 1, "description": "description2_"},
+        )
+        self.assertEqual(response.headers["location"], "/manage/")
+
+    def test_update_test_flash(self):
+        db = connect(self.db)
+        db.executescript(self._preload)
+        self.client.post(
+            "/auth/login",
+            data={"username": "test", "password": "test"},
+        )
+        parameters = [
+            ("", "name1", "description1", b"Device ID is required"),
+            ("1", "", "description1", b"Name is required"),
+            ("1", "name1", "", b"Description is required"),
+            ("2", "name1", "description1", b"Device ID does not exist"),
+        ]
+        for parameter in parameters:
+            with self.subTest(parameter=parameter):
+                device_id, name, description, message = parameter
+                response = self.client.post(
+                    "/manage/test/1/update",
+                    data={"device_id": device_id, "name": name, "description": description},
+                    follow_redirects=True,
+                )
+                self.assertIn(message, response.data)
 
     def test_create_task(self):
         db = connect(self.db)
@@ -114,7 +186,7 @@ class ManageTestCase(TestCase):
         )
         response = self.client.post(
             "/manage/tasks/create",
-            data={"name": "name2", "device_id": 1, "command": "command2"},
+            data={"name": "name2", "test_id": 1, "command": "command2"},
         )
         self.assertEqual(response.headers["location"], "/manage/")
 
@@ -126,17 +198,17 @@ class ManageTestCase(TestCase):
             data={"username": "test", "password": "test"},
         )
         parameters = [
-            ("", "name1", "command1", b"Device ID is required"),
+            ("", "name1", "command1", b"Test ID is required"),
             ("1", "", "command1", b"Name is required"),
             ("1", "name1", "", b"Command is required"),
-            ("2", "name1", "command1", b"Device ID does not exist"),
+            ("2", "name1", "command1", b"Test ID does not exist"),
         ]
         for parameter in parameters:
             with self.subTest(parameter=parameter):
-                device_id, name, command, message = parameter
+                test_id, name, command, message = parameter
                 response = self.client.post(
                     "/manage/tasks/create",
-                    data={"device_id": device_id, "name": name, "command": command},
+                    data={"test_id": test_id, "name": name, "command": command},
                     follow_redirects=True,
                 )
                 self.assertIn(message, response.data)
@@ -150,7 +222,7 @@ class ManageTestCase(TestCase):
         )
         response = self.client.post(
             "/manage/tasks/1/update",
-            data={"name": "name2_", "device_id": 1, "command": "command2_"},
+            data={"name": "name2_", "test_id": 1, "command": "command2_"},
         )
         self.assertEqual(response.headers["location"], "/manage/")
 
@@ -162,17 +234,17 @@ class ManageTestCase(TestCase):
             data={"username": "test", "password": "test"},
         )
         parameters = [
-            ("", "name1", "command1", b"Device ID is required"),
+            ("", "name1", "command1", b"Test ID is required"),
             ("1", "", "command1", b"Name is required"),
             ("1", "name1", "", b"Command is required"),
-            ("2", "name1", "command1", b"Device ID does not exist"),
+            ("2", "name1", "command1", b"Test ID does not exist"),
         ]
         for parameter in parameters:
             with self.subTest(parameter=parameter):
-                device_id, name, command, message = parameter
+                test_id, name, command, message = parameter
                 response = self.client.post(
                     "/manage/tasks/1/update",
-                    data={"device_id": device_id, "name": name, "command": command},
+                    data={"test_id": test_id, "name": name, "command": command},
                     follow_redirects=True,
                 )
                 self.assertIn(message, response.data)

@@ -50,16 +50,35 @@
 	</table>
 </section>
 <section>
+	<h3>Tests (<a href="{{ url_for('manage.create_test') }}">add</a>)</h3>
+	<table>
+		<tr>
+			<th>Name</th>
+			<th colspan="2">Description</th>
+		</tr>
+		{% for test in tests %}
+		<tr>
+			<td>{{ test.name }}</td>
+			<td>{{ test.description }}</td>
+			<td class="command">
+				<a href="{{ url_for('manage.update_test', id=test['id']) }}">update</a>
+				<a href="{{ url_for('manage.delete_test', id=test['id']) }}" onclick="return confirm('Are you sure?')">delete</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+</section>
+<section>
 	<h3>Tasks (<a href="{{ url_for('manage.create_task') }}">add</a>)</h3>
 	<table>
 		<tr>
-			<th>Device ID</th>
+			<th>Test ID</th>
 			<th>Name</th>
 			<th colspan="2">Command</th>
 		</tr>
 		{% for task in tasks %}
 		<tr>
-			<td>{{ task.device_id }}</td>
+			<td>{{ task.test_id }}</td>
 			<td>{{ task.name }}</td>
 			<td>{{ task.command }}</td>
 			<td class="command">
