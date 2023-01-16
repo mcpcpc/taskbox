@@ -23,11 +23,10 @@ manage = Blueprint("manage", __name__, url_prefix="/manage")
 @manage.get("/")
 @login_required
 def index():
+    users_v = get_db().execute("select * from user_v").fetchall()
     devices = get_db().execute("select * from device").fetchall()
     tasks = get_db().execute("select * from task").fetchall()
     tests = get_db().execute("select * from test").fetchall()
-    devices = get_db().execute("select * from device").fetchall()
-    users_v = get_db().execute("select * from user_v").fetchall()
     return render_template(
         "manage/manage.html", devices=devices, tests=tests, tasks=tasks, users_v=users_v
     )
