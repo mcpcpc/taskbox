@@ -16,6 +16,7 @@ from jwt import encode as jwt_encode
 
 from taskbox.db import get_db
 from taskbox.auth import login_required
+from taskbox.api import delete_device as api_delete_device
 
 manage = Blueprint("manage", __name__, url_prefix="/manage")
 
@@ -152,8 +153,10 @@ def update_device(id: int):
 @manage.route("/devices/<int:id>/delete", methods=("GET",))
 @login_required
 def delete_device(id: int):
-    db = get_db()
-    db.execute("PRAGMA foreign_keys = ON")
-    db.execute("DELETE FROM device WHERE id = ?", (id,))
-    db.commit()
+    #db = get_db()
+    #db.execute("PRAGMA foreign_keys = ON")
+    #db.execute("DELETE FROM device WHERE id = ?", (id,))
+    #db.commit()
+    resp = api_delete_device(id)
+    print(resp)
     return redirect(url_for("manage.index"))
