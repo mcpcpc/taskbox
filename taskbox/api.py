@@ -44,6 +44,8 @@ def create_task():
 @token_required
 def read_task(id: int):
     task = get_db().execute("SELECT * FROM task WHERE id = ?", (id,)).fetchone()
+    if not task:
+        return {"message": "Task does not exist"}, 401
     return dict(task)
 
 
