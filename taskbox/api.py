@@ -13,21 +13,18 @@ api = Blueprint("api", __name__, url_prefix="/api")
 @api.post("/task")
 @token_required
 def create_task():
-    device_id = request.form["device_id"]
-    name = request.form["name"]
-    command = request.form["command"]
-    if not name:
+    if not request.form["name"]:
         return {"message": "Name is required."}, 401
-    elif not command:
+    elif not request.form["command"]:
         return {"message": "Command is required."}, 401
-    elif not device_id:
+    elif not request.form["device_id"]:
         return {"message": "Device ID is required."}, 401
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             "INSERT INTO task (name, command, device_id) VALUES (?, ?, ?)",
-            (name, command, device_id),
+            (request.form["name"], request.form["command"], request.form["device_id"]),
         )
         db.commit()
     except db.IntegrityError:
@@ -48,21 +45,18 @@ def read_task(id: int):
 @api.post("/task/<int:id>")
 @token_required
 def update_task(id: int):
-    device_id = request.form["device_id"]
-    name = request.form["name"]
-    command = request.form["command"]
-    if not name:
+    if not request.form["name"]:
         return {"message": "Name is required."}, 401
-    elif not command:
+    elif not request.form["command"]:
         return {"message": "Command is required."}, 401
-    elif not device_id:
+    elif not request.form["device_id"]:
         return {"message": "Device ID is required."}, 401
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             "UPDATE task SET device_id = ?, name = ?, command = ? WHERE id = ?",
-            (device_id, name, command, id),
+            (request.form["device_id"], request.form["name"], request.form["command"], id),
         )
         db.commit()
     except db.IntegrityError:
