@@ -87,12 +87,18 @@ def delete_task(id: int):
 @api.post("/device")
 @token_required
 def create_device():
+    name = request.form["name"]
+    description = request.form["description"]
+    if not name:
+        return {"message": "Name is required."}, 401
+    elif not description:
+        return {"message": "Description is required."}, 401
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
-            "INSERT INTO device (name, description) VALUES (:name, :description)",
-            request.form,
+            "INSERT INTO device (name, description) VALUES (?, ?)",
+            (name, description),
         )
         db.commit()
     except db.IntegrityError:
