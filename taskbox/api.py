@@ -83,22 +83,20 @@ def delete_task(id: int):
 @api.post("/device")
 @token_required
 def create_device():
-    name = request.form["name"]
-    description = request.form["description"]
-    if not name:
+    if not request.form["name"]:
         return {"message": "Name is required."}, 401
-    elif not description:
+    elif not request.form["description"]:
         return {"message": "Description is required."}, 401
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             "INSERT INTO device (name, description) VALUES (?, ?)",
-            (name, description),
+            (request.form["name"], request.form["description"]),
         )
         db.commit()
     except db.IntegrityError:
-        return {"message": "Device already exists"}, 401
+        return {"message": "Device already exists."}, 401
     else:
         return {"message": "Device successfully created."}, 201
 
@@ -108,25 +106,29 @@ def create_device():
 def read_device(id: int):
     device = get_db().execute("SELECT * FROM device WHERE id = ?", (id,)).fetchone()
     if not device:
-        return {"message": "Device does not exist"}, 401
+        return {"message": "Device does not exist."}, 401
     return dict(device)
 
 
 @api.post("/device/<int:id>")
 @token_required
 def update_device(id: int):
-    name = request.form["name"]
-    description = request.form["description"]
-    if not name:
+    if not request.form["name"]:
         return {"message": "Name is required."}, 401
-    elif not description:
+    elif not request.form["description"]:
         return {"message": "Description is required."}, 401
-    db.execute(
-        "UPDATE device SET name = ?, description = ? WHERE id = ?",
-        (name, description, id),
-    )
-    db.commit()
-    return {"message": "Device successfully updated."}, 201
+    try:
+        db = get_db()
+        db.execute("PRAGMA foreign_keys = ON")
+        db.execute(
+            "UPDATE device SET name = ?, description = ? WHERE id = ?",
+            (request.form["name"], request.form["description"], id),
+        )
+        db.commit()
+    except db.IntegrityError:
+        return {"message": "Device already exists."}, 401
+    else:
+        return {"message": "Device successfully updated."}, 201
 
 
 @api.delete("/device/<int:id>")
