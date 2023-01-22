@@ -1,18 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-from datetime import timedelta
-from datetime import timezone
-
 from flask import Blueprint
-from flask import current_app
 from flask import flash
 from flask import redirect
 from flask import request
 from flask import render_template
 from flask import url_for
-from jwt import encode as jwt_encode
 
 from taskbox.db import get_db
 from taskbox.auth import login_required
