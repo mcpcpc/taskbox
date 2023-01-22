@@ -32,8 +32,8 @@ def token_required(view):
         try:
             token = request.authorization["password"]
             jwt_decode(token, secret_key, algorithms=["HS256"])
-        except Error as error:
-            return error, 401
+        except Exception as exception:
+            return exception, 401
         return view(**kwargs)
 
     return wrapped_view
