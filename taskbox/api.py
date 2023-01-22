@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
-from functools import wraps
-
 from flask import Blueprint
-from flask import current_app
 from flask import request
 
 from taskbox.db import get_db
